@@ -1,0 +1,72 @@
+<script setup lang="ts">
+import NavFooter from '@/components/NavFooter.vue';
+import NavMain from '@/components/NavMain.vue';
+import NavUser from '@/components/NavUser.vue';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from '@/components/ui/sidebar';
+import { dashboard } from '@/routes';
+import { type NavItem } from '@/types';
+import { Link } from '@inertiajs/vue3';
+import { Calendar, LayoutGrid, Users, Plane } from 'lucide-vue-next';
+import AppLogo from './AppLogo.vue';
+import { route } from 'ziggy-js';
+
+const mainNavItems: NavItem[] = [
+    {
+        title: 'Dashboard',
+        href: dashboard(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Users',
+        href: route('admin.users.index'),
+        icon: Users,
+        can: 'user_index',
+    },
+    {
+        title: 'Vacations',
+        href: route('admin.vacations.index'),
+        icon: Plane,
+    },
+    {
+        title: 'Reservations',
+        href: route('admin.reservations.index'),
+        icon: Calendar,
+    },
+];
+
+const footerNavItems: NavItem[] = [];
+</script>
+
+<template>
+    <Sidebar collapsible="icon" variant="inset">
+        <SidebarHeader>
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <SidebarMenuButton size="lg" as-child>
+                        <Link :href="dashboard()">
+                            <AppLogo />
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
+        </SidebarHeader>
+
+        <SidebarContent>
+            <NavMain :items="mainNavItems" />
+        </SidebarContent>
+
+        <SidebarFooter>
+            <NavFooter :items="footerNavItems" />
+            <NavUser />
+        </SidebarFooter>
+    </Sidebar>
+    <slot />
+</template>
