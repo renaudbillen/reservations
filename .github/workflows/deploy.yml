@@ -29,7 +29,7 @@ jobs:
         run: npm install
 
       - name: Build NPM Assets
-        run: npm run build
+        run: rm -f public/hot && npm run build
 
       - name: Synchronize Files To Server
         uses: easingthemes/ssh-deploy@v2.1.5
