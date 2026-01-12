@@ -8,8 +8,7 @@
             <div v-if="can.user_create">
                 <Button
                     @click="router.visit(props.createRoute)"
-                    rel="noopener"
-                    severity="contrast"
+                    class="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out hover:bg-blue-700 focus:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:bg-blue-900"
                 >
                     <Plus /> Add {{ model }}
                 </Button>
@@ -94,7 +93,7 @@
                                     )
                                 "
                                 rel="noopener"
-                                severity="contrast"
+                                severity="info"
                             >
                                 <SquarePen class="h-5 w-5" /> Edit
                             </Button>
@@ -160,6 +159,7 @@ import { router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import { SquarePen, Trash, Plus } from 'lucide-vue-next';
 import { DataTable, Column, Button, Dialog, useToast } from 'primevue';
+import { route } from 'ziggy-js';
 
 type SortDirection = 'asc' | 'desc';
 
