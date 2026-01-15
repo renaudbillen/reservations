@@ -36,7 +36,6 @@ class UserUpdateRequest extends FormRequest
                 Rule::unique('users')->ignore($userId),
             ],
             'password' => ['sometimes', 'nullable', 'string', 'min:8', 'confirmed'],
-            'id_role' => ['required', 'integer', 'exists:roles,id'],
         ];
     }
 
@@ -54,9 +53,6 @@ class UserUpdateRequest extends FormRequest
             'email.unique' => 'This email is already in use.',
             'password.min' => 'The password must be at least :min characters.',
             'password.confirmed' => 'The password confirmation does not match.',
-            'id_role.required' => 'The role field is required.',
-            'id_role.integer' => 'The selected role is invalid.',
-            'id_role.exists' => 'The selected role is invalid.',
         ];
     }
 }

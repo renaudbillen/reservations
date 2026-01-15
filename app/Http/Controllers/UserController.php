@@ -21,9 +21,7 @@ class UserController extends Controller
 
     public function create()
     {
-        return Inertia::render('admin/users/Create', [
-            'roles' => Role::all(),
-        ]);
+        return Inertia::render('admin/users/Create');
     }
 
     public function store(UserStoreRequest $request): RedirectResponse
@@ -36,9 +34,7 @@ class UserController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        if (!empty($validated['id_role'])) {
-            $user->syncRoles($validated['id_role']);
-        }
+        $user->syncRoles(2);
 
         return redirect()->route('admin.users.index');
     }
@@ -47,8 +43,6 @@ class UserController extends Controller
     {
         return Inertia::render('admin/users/Edit', [
             'user' => $user,
-            'roles' => Role::all(),
-            'id_role' => $user->roles()->pluck('id')->toArray()[0],
         ]);
     }
 
@@ -69,10 +63,6 @@ class UserController extends Controller
         }
 
         $user->update($updateData);
-
-        if (!empty($validated['id_role'])) {
-            $user->syncRoles($validated['id_role']);
-        }
 
         return redirect()->route('admin.users.index');
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\VacationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,5 +20,6 @@ Route::middleware(['auth:sanctum'])
     ->name('api.admin.')
     ->group(function () {
         Route::apiResource('users', UserController::class)->names('users');
+        Route::apiResource('vacations', VacationController::class)->names('vacations');
     });
 

@@ -84,33 +84,6 @@
                                     >
                                 </IftaLabel>
                             </div>
-
-                            <div class="sm:col-span-2">
-                                <label
-                                    for="id_role"
-                                    class="block text-sm font-medium text-gray-700"
-                                    >Role</label
-                                >
-                                <div class="mt-2">
-                                    <Select
-                                        id="id_role"
-                                        v-model="form.id_role"
-                                        :options="roleOptions"
-                                        optionLabel="label"
-                                        optionValue="value"
-                                        placeholder="Select a role"
-                                        class="w-full"
-                                        :class="{
-                                            'p-invalid': form.errors.id_role,
-                                        }"
-                                    />
-                                </div>
-                                <small
-                                    v-if="form.errors.id_role"
-                                    class="p-error"
-                                    >{{ form.errors.id_role }}</small
-                                >
-                            </div>
                         </div>
 
                         <div class="mt-8 flex items-center justify-end">
@@ -142,9 +115,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { onMounted, ref } from 'vue';
 import {
-    Select,
     InputText,
     Password,
     IftaLabel,
@@ -157,15 +128,6 @@ interface BreadcrumbItem {
     title: string;
     href: string;
 }
-
-interface Role {
-    id: number;
-    name: string;
-}
-
-const props = defineProps<{
-    roles: Role[];
-}>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -183,21 +145,12 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const toast = useToast();
-const roleOptions = ref<{ label: string; value: number }[]>([]);
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-    id_role: null as number | null,
-});
-
-onMounted(() => {
-    roleOptions.value = props.roles.map((role: any) => ({
-        label: role.name,
-        value: role.id,
-    }));
 });
 
 const submit = () => {

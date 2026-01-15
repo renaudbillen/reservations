@@ -100,34 +100,6 @@
                                     {{ form.errors.password_confirmation }}
                                 </small>
                             </div>
-
-                            <div class="col-span-2">
-                                <label
-                                    class="mb-2 block text-sm font-medium text-gray-700"
-                                >
-                                    Roles
-                                </label>
-                                <div class="card justify-content-center flex">
-                                    <Select
-                                        v-model="form.id_role"
-                                        :options="roleOptions"
-                                        optionLabel="label"
-                                        optionValue="value"
-                                        placeholder="Select role"
-                                        class="w-full"
-                                        :class="{
-                                            'p-invalid': form.errors.id_role,
-                                        }"
-                                        :multiple="true"
-                                    />
-                                </div>
-                                <small
-                                    v-if="form.errors.id_role"
-                                    class="p-error"
-                                >
-                                    {{ form.errors.id_role }}
-                                </small>
-                            </div>
                         </div>
 
                         <div class="mt-8 flex items-center justify-end">
@@ -144,9 +116,8 @@
                             <Button
                                 type="submit"
                                 :loading="form.processing"
-                                severity="contrast"
+                                severity="info"
                             >
-                                <i class="pi pi-check mr-2"></i>
                                 Update User
                             </Button>
                         </div>
@@ -154,8 +125,6 @@
                 </div>
             </div>
         </div>
-
-        <ConfirmDialog />
     </AppLayout>
 </template>
 
@@ -163,14 +132,11 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { onMounted, ref } from 'vue';
 import {
-    Select,
     InputText,
     Password,
     IftaLabel,
     Button,
-    ConfirmDialog,
     useToast,
 } from 'primevue';
 
@@ -179,33 +145,22 @@ interface BreadcrumbItem {
     href: string;
 }
 
-interface Role {
-    id: number;
-    name: string;
-}
-
 interface User {
     id: number;
     name: string;
     email: string;
-    role: Role;
 }
 
 const toast = useToast();
 const props = defineProps<{
     user: User;
-    roles: Role[];
-    id_role: number;
 }>();
-
-const roleOptions = ref<{ label: string; value: number }[]>([]);
 
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
     password: '',
     password_confirmation: '',
-    id_role: props.id_role,
 });
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -222,13 +177,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: route('admin.users.edit', props.user.id),
     },
 ];
-
-onMounted(() => {
-    roleOptions.value = props.roles.map((role: any) => ({
-        label: role.name,
-        value: role.id,
-    }));
-});
 
 const submit = () => {
     form.put(route('admin.users.update', props.user.id), {

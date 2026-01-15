@@ -82,7 +82,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\VacationController::create
-* @see app/Http/Controllers/VacationController.php:26
+* @see app/Http/Controllers/VacationController.php:22
 * @route '/admin/vacations/create'
 */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -97,7 +97,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\VacationController::create
-* @see app/Http/Controllers/VacationController.php:26
+* @see app/Http/Controllers/VacationController.php:22
 * @route '/admin/vacations/create'
 */
 create.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\VacationController::create
-* @see app/Http/Controllers/VacationController.php:26
+* @see app/Http/Controllers/VacationController.php:22
 * @route '/admin/vacations/create'
 */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -116,7 +116,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\VacationController::create
-* @see app/Http/Controllers/VacationController.php:26
+* @see app/Http/Controllers/VacationController.php:22
 * @route '/admin/vacations/create'
 */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -126,7 +126,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\VacationController::create
-* @see app/Http/Controllers/VacationController.php:26
+* @see app/Http/Controllers/VacationController.php:22
 * @route '/admin/vacations/create'
 */
 const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -136,7 +136,7 @@ const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => 
 
 /**
 * @see \App\Http\Controllers\VacationController::create
-* @see app/Http/Controllers/VacationController.php:26
+* @see app/Http/Controllers/VacationController.php:22
 * @route '/admin/vacations/create'
 */
 createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -146,7 +146,7 @@ createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\VacationController::create
-* @see app/Http/Controllers/VacationController.php:26
+* @see app/Http/Controllers/VacationController.php:22
 * @route '/admin/vacations/create'
 */
 createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -163,7 +163,7 @@ create.form = createForm
 
 /**
 * @see \App\Http\Controllers\VacationController::store
-* @see app/Http/Controllers/VacationController.php:34
+* @see app/Http/Controllers/VacationController.php:30
 * @route '/admin/vacations'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -178,7 +178,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\VacationController::store
-* @see app/Http/Controllers/VacationController.php:34
+* @see app/Http/Controllers/VacationController.php:30
 * @route '/admin/vacations'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -187,7 +187,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\VacationController::store
-* @see app/Http/Controllers/VacationController.php:34
+* @see app/Http/Controllers/VacationController.php:30
 * @route '/admin/vacations'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -197,7 +197,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\VacationController::store
-* @see app/Http/Controllers/VacationController.php:34
+* @see app/Http/Controllers/VacationController.php:30
 * @route '/admin/vacations'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -207,7 +207,7 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 
 /**
 * @see \App\Http\Controllers\VacationController::store
-* @see app/Http/Controllers/VacationController.php:34
+* @see app/Http/Controllers/VacationController.php:30
 * @route '/admin/vacations'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -219,7 +219,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\VacationController::edit
-* @see app/Http/Controllers/VacationController.php:52
+* @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
 export const edit = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -234,7 +234,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\VacationController::edit
-* @see app/Http/Controllers/VacationController.php:52
+* @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
 edit.url = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -267,7 +267,7 @@ edit.url = (args: { vacation: number | { id: number } } | [vacation: number | { 
 
 /**
 * @see \App\Http\Controllers\VacationController::edit
-* @see app/Http/Controllers/VacationController.php:52
+* @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
 edit.get = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -277,7 +277,7 @@ edit.get = (args: { vacation: number | { id: number } } | [vacation: number | { 
 
 /**
 * @see \App\Http\Controllers\VacationController::edit
-* @see app/Http/Controllers/VacationController.php:52
+* @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
 edit.head = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -287,7 +287,7 @@ edit.head = (args: { vacation: number | { id: number } } | [vacation: number | {
 
 /**
 * @see \App\Http\Controllers\VacationController::edit
-* @see app/Http/Controllers/VacationController.php:52
+* @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
 const editForm = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -297,7 +297,7 @@ const editForm = (args: { vacation: number | { id: number } } | [vacation: numbe
 
 /**
 * @see \App\Http\Controllers\VacationController::edit
-* @see app/Http/Controllers/VacationController.php:52
+* @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
 editForm.get = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -307,7 +307,7 @@ editForm.get = (args: { vacation: number | { id: number } } | [vacation: number 
 
 /**
 * @see \App\Http\Controllers\VacationController::edit
-* @see app/Http/Controllers/VacationController.php:52
+* @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
 editForm.head = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -324,7 +324,7 @@ edit.form = editForm
 
 /**
 * @see \App\Http\Controllers\VacationController::update
-* @see app/Http/Controllers/VacationController.php:62
+* @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
 export const update = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -339,7 +339,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\VacationController::update
-* @see app/Http/Controllers/VacationController.php:62
+* @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
 update.url = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -372,7 +372,7 @@ update.url = (args: { vacation: number | { id: number } } | [vacation: number | 
 
 /**
 * @see \App\Http\Controllers\VacationController::update
-* @see app/Http/Controllers/VacationController.php:62
+* @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
 update.put = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -382,7 +382,7 @@ update.put = (args: { vacation: number | { id: number } } | [vacation: number | 
 
 /**
 * @see \App\Http\Controllers\VacationController::update
-* @see app/Http/Controllers/VacationController.php:62
+* @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
 update.patch = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -392,7 +392,7 @@ update.patch = (args: { vacation: number | { id: number } } | [vacation: number 
 
 /**
 * @see \App\Http\Controllers\VacationController::update
-* @see app/Http/Controllers/VacationController.php:62
+* @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
 const updateForm = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -407,7 +407,7 @@ const updateForm = (args: { vacation: number | { id: number } } | [vacation: num
 
 /**
 * @see \App\Http\Controllers\VacationController::update
-* @see app/Http/Controllers/VacationController.php:62
+* @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
 updateForm.put = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -422,7 +422,7 @@ updateForm.put = (args: { vacation: number | { id: number } } | [vacation: numbe
 
 /**
 * @see \App\Http\Controllers\VacationController::update
-* @see app/Http/Controllers/VacationController.php:62
+* @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
 updateForm.patch = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -439,7 +439,7 @@ update.form = updateForm
 
 /**
 * @see \App\Http\Controllers\VacationController::destroy
-* @see app/Http/Controllers/VacationController.php:79
+* @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
 export const destroy = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -454,7 +454,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\VacationController::destroy
-* @see app/Http/Controllers/VacationController.php:79
+* @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
 destroy.url = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -487,7 +487,7 @@ destroy.url = (args: { vacation: number | { id: number } } | [vacation: number |
 
 /**
 * @see \App\Http\Controllers\VacationController::destroy
-* @see app/Http/Controllers/VacationController.php:79
+* @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
 destroy.delete = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -497,7 +497,7 @@ destroy.delete = (args: { vacation: number | { id: number } } | [vacation: numbe
 
 /**
 * @see \App\Http\Controllers\VacationController::destroy
-* @see app/Http/Controllers/VacationController.php:79
+* @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
 const destroyForm = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -512,7 +512,7 @@ const destroyForm = (args: { vacation: number | { id: number } } | [vacation: nu
 
 /**
 * @see \App\Http\Controllers\VacationController::destroy
-* @see app/Http/Controllers/VacationController.php:79
+* @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
 destroyForm.delete = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

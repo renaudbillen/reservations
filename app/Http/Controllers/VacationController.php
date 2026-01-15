@@ -13,11 +13,7 @@ class VacationController extends Controller
      */
     public function index()
     {
-        $vacations = Vacation::orderBy('start_date', 'desc')->get();
-
-        return Inertia::render('admin/vacations/Index', [
-            'vacations' => $vacations,
-        ]);
+        return Inertia::render('admin/vacations/Index');
     }
 
     /**

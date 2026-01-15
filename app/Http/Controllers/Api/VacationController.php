@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Vacation;
 use Illuminate\Http\JsonResponse;
 
-class UserController extends Controller
+class VacationController extends Controller
 {
     /**
      * Display a listing of the users.
@@ -17,17 +17,9 @@ class UserController extends Controller
         $sortBy = request('sort', 'created_at');
         $sortDirection = request('direction', 'desc');
 
-        $users = User::query()
-            ->whereHas('roles', function ($query) {
-                $query
-                    ->where('role_id', 2)
-                    ->where('model_type', 'App\Models\User');
-            })
+        $vacations = Vacation::query()
             ->when(request('search'), function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%");
-                });
+                $query->where('name', 'like', "%{$search}%");
             })
             ->orderBy($sortBy, $sortDirection)
             ->paginate($perPage)
@@ -35,7 +27,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'users' => $users,
+            'vacations' => $vacations,
         ]);
     }
 }
