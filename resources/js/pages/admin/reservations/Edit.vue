@@ -1,8 +1,8 @@
 <template>
-    <AppLayout :title="`Edit Reservation #${reservation.id}`">
+    <AppLayout :title="`Modifier la réservation #${reservation.id}`">
         <template #header>
             <h2 class="text-xl leading-tight font-semibold text-gray-800">
-                Edit Reservation #{{ reservation.id }}
+                Modifier la réservation #{{ reservation.id }}
             </h2>
         </template>
 
@@ -16,7 +16,7 @@
                             <label
                                 for="room_id"
                                 class="block text-sm font-medium text-gray-700"
-                                >Room</label
+                                >Salle</label
                             >
                             <select
                                 id="room_id"
@@ -27,7 +27,7 @@
                                         form.errors.room_id,
                                 }"
                             >
-                                <option value="">Select a room</option>
+                                <option value="">Sélectionnez une salle</option>
                                 <option
                                     v-for="room in rooms"
                                     :key="room.id"
@@ -50,7 +50,7 @@
                                 <label
                                     for="reservation_date"
                                     class="block text-sm font-medium text-gray-700"
-                                    >Reservation Date</label
+                                    >Date de réservation</label
                                 >
                                 <input
                                     type="date"
@@ -75,7 +75,7 @@
                                 <label
                                     for="reservation_period"
                                     class="block text-sm font-medium text-gray-700"
-                                    >Period</label
+                                    >Période</label
                                 >
                                 <select
                                     id="reservation_period"
@@ -86,9 +86,9 @@
                                             form.errors.reservation_period,
                                     }"
                                 >
-                                    <option value="">Select a period</option>
-                                    <option value="AM">Morning (AM)</option>
-                                    <option value="PM">Afternoon (PM)</option>
+                                    <option value="">Sélectionnez une période</option>
+                                    <option value="AM">Matin (AM)</option>
+                                    <option value="PM">Après-midi (PM)</option>
                                 </select>
                                 <p
                                     v-if="form.errors.reservation_period"
@@ -106,7 +106,7 @@
                                     @click="confirmDelete"
                                     class="inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
                                 >
-                                    Delete Reservation
+                                    Supprimer la réservation
                                 </button>
                             </div>
                             <div class="flex space-x-3">
@@ -114,7 +114,7 @@
                                     :href="route('admin.reservations.index')"
                                     class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
                                 >
-                                    Cancel
+                                    Annuler
                                 </Link>
                                 <button
                                     type="submit"
@@ -122,9 +122,9 @@
                                     :disabled="form.processing"
                                 >
                                     <span v-if="form.processing"
-                                        >Updating...</span
+                                        >Mise à jour...</span
                                     >
-                                    <span v-else>Update</span>
+                                    <span v-else>Mettre à jour</span>
                                 </button>
                             </div>
                         </div>
@@ -159,7 +159,7 @@ const submit = () => {
 };
 
 const confirmDelete = () => {
-    if (confirm('Are you sure you want to delete this reservation?')) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')) {
         router.delete(
             route('admin.reservations.destroy', props.reservation.id),
         );

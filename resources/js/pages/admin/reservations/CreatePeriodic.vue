@@ -1,8 +1,8 @@
 <template>
-    <AppLayout title="Create Periodic Reservation" :breadcrumbs="breadcrumbs">
+    <AppLayout title="Créer une réservation périodique" :breadcrumbs="breadcrumbs">
         <template #header>
             <h2 class="text-xl leading-tight font-semibold text-gray-800">
-                Create Periodic Reservation
+                Créer une réservation périodique
             </h2>
         </template>
 
@@ -29,7 +29,7 @@
                                 }"
                                 required
                             >
-                                <option value="">Select a room</option>
+                                <option value="">Sélectionnez une salle</option>
                                 <option
                                     v-for="room in rooms"
                                     :key="room.id"
@@ -65,7 +65,7 @@
                                     }"
                                     required
                                 >
-                                    <option value="">Select a day</option>
+                                    <option value="">Sélectionnez un jour</option>
                                     <option
                                         v-for="(day, index) in daysOfWeek"
                                         :key="index"
@@ -98,9 +98,9 @@
                                     }"
                                     required
                                 >
-                                    <option value="">Select a period</option>
-                                    <option value="AM">Morning (AM)</option>
-                                    <option value="PM">Afternoon (PM)</option>
+                                    <option value="">Sélectionnez une période</option>
+                                    <option value="AM">Matin (AM)</option>
+                                    <option value="PM">Après-midi (PM)</option>
                                 </select>
                                 <p
                                     v-if="form.errors.period"
@@ -118,7 +118,7 @@
                                     for="start_date"
                                     class="block text-sm font-medium text-gray-700"
                                 >
-                                    Start Date
+                                    Date de début
                                 </label>
                                 <input
                                     type="date"
@@ -145,7 +145,7 @@
                                     for="end_date"
                                     class="block text-sm font-medium text-gray-700"
                                 >
-                                    End Date
+                                    Date de fin
                                 </label>
                                 <input
                                     type="date"
@@ -184,7 +184,7 @@
                                 }"
                             >
                                 <option value="">
-                                    Select a user (defaults to you)
+                                    Sélectionnez un praticien (vous par défaut)
                                 </option>
                                 <option
                                     v-for="user in users"
@@ -208,7 +208,7 @@
                                 for="description"
                                 class="block text-sm font-medium text-gray-700"
                             >
-                                Description (Optional)
+                                Description (Optionnel)
                             </label>
                             <textarea
                                 id="description"
@@ -241,17 +241,17 @@
                                 Summary
                             </h3>
                             <p class="text-sm text-gray-600">
-                                This will create reservations for every
+                                Cela créera des réservations pour chaque
                                 {{ daysOfWeek[form.day_of_week] }}
-                                {{ form.period }} from
-                                {{ formatDate(form.start_date) }} to
+                                {{ form.period }} du
+                                {{ formatDate(form.start_date) }} au
                                 {{ formatDate(form.end_date) }}.
                             </p>
                             <p
                                 v-if="totalOccurrences > 0"
                                 class="mt-2 text-sm font-medium text-indigo-700"
                             >
-                                Total reservations to be created:
+                                Total des réservations à créer :
                                 {{ totalOccurrences }}
                             </p>
                         </div>
@@ -262,7 +262,7 @@
                                 :href="route('admin.reservations.index')"
                                 class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
                             >
-                                Cancel
+                                Annuler
                             </Link>
                             <button
                                 type="submit"
@@ -294,16 +294,16 @@
                                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                         ></path>
                                     </svg>
-                                    Creating...
+                                    Création en cours...
                                 </span>
                                 <span v-else
-                                    >Create
+                                    >Créer
                                     {{
                                         totalOccurrences > 0
                                             ? `(${totalOccurrences})`
                                             : ''
                                     }}
-                                    Reservations</span
+                                    Réservations</span
                                 >
                             </button>
                         </div>
@@ -321,10 +321,10 @@ import { computed, ref, watch } from 'vue';
 import { route } from 'ziggy-js';
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: route('dashboard') },
-    { title: 'Reservations', href: route('admin.reservations.index') },
+    { title: 'Tableau de bord', href: route('dashboard') },
+    { title: 'Réservations', href: route('admin.reservations.index') },
     {
-        title: 'Create Periodic Reservation',
+        title: 'Créer une réservation périodique',
         href: route('admin.periodicReservations.create'),
     },
 ];

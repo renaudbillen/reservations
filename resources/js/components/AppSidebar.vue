@@ -20,23 +20,23 @@ import { route } from 'ziggy-js';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Tableau de bord',
         href: dashboard(),
         icon: LayoutGrid,
     },
     {
-        title: 'Users',
+        title: 'Praticiens',
         href: route('admin.users.index'),
         icon: Users,
         can: 'user_index',
     },
     {
-        title: 'Vacations',
+        title: 'Vacances',
         href: route('admin.vacations.index'),
         icon: Plane,
     },
     {
-        title: 'Reservations',
+        title: 'Réservations',
         href: route('admin.reservations.index'),
         icon: Calendar,
     },

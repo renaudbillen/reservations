@@ -10,7 +10,7 @@
                     @click="router.visit(props.createRoute)"
                     class="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out hover:bg-blue-700 focus:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:bg-blue-900"
                 >
-                    <Plus /> Add {{ model }}
+                    <Plus /> Ajouter {{ model }}
                 </Button>
             </div>
         </div>
@@ -39,7 +39,7 @@
                         type="text"
                         v-model="filters.search"
                         class="block w-full rounded-md border border-gray-300 bg-white py-2 pr-3 pl-10 leading-5 placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
-                        :placeholder="`Search ${title.toLowerCase()}...`"
+                        :placeholder="`Rechercher ${title.toLowerCase()}...`"
                         @keyup.enter="fetchData"
                     />
                 </div>
@@ -61,19 +61,20 @@
                 class="p-datatable-sm"
                 :rowsPerPageOptions="[10, 20, 50]"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                currentPageReportTemplate="{first} à {last} de {totalRecords} enregistrement(s)"
                 :first="(data.current_page - 1) * filters.per_page"
                 stripedRows
                 scrollable
             >
                 <template #empty>
                     <div class="p-4 text-center text-gray-500">
-                        No {{ title.toLowerCase() }} found.
+                        Pas de {{ title.toLowerCase() }} trouvé.
                     </div>
                 </template>
                 <template #loading>
                     <div class="p-4 text-center">
-                        Loading {{ title.toLowerCase() }}. Please wait...
+                        Chargement {{ title.toLowerCase() }}. Veuillez
+                        patienter...
                     </div>
                 </template>
 
@@ -82,7 +83,7 @@
                 <Column
                     v-if="(can.user_edit || can.user_destroy) && showActions"
                     :exportable="false"
-                    style="min-width: 8rem"
+                    style="width: 12rem"
                 >
                     <template #body="slotProps">
                         <div class="flex space-x-2">
@@ -95,14 +96,14 @@
                                 rel="noopener"
                                 severity="info"
                             >
-                                <SquarePen class="h-5 w-5" /> Edit
+                                <SquarePen class="h-5 w-5" /> Modifier
                             </Button>
                             <Button
                                 v-if="can.user_destroy"
                                 @click="handleDelete(slotProps.data)"
                                 severity="danger"
                             >
-                                <Trash class="h-5 w-5" /> Delete
+                                <Trash class="h-5 w-5" /> Supprimer
                             </Button>
                         </div>
                     </template>
@@ -114,7 +115,7 @@
             v-model:visible="visible"
             modal
             :style="{ width: '450px' }"
-            header="Confirm Deletion"
+            header="Confirmer la suppression"
             :closable="!deleteLoading"
             :showHeader="true"
             :dismissableMask="!deleteLoading"
@@ -125,24 +126,22 @@
                     style="font-size: 2rem"
                 />
                 <span v-if="itemToDelete">
-                    Are you sure you want to delete this
-                    {{ title.toLowerCase() }}?
+                    Etes-vous sûr de vouloir supprimer ce
+                    {{ model.toLowerCase() }}?
                 </span>
             </div>
             <template #footer>
                 <div class="flex justify-end gap-2">
                     <Button
                         type="button"
-                        label="No"
-                        icon="pi pi-times"
-                        class="p-button-text"
+                        label="Non"
+                        class="p-button-secondary"
                         :disabled="deleteLoading"
                         @click="visible = false"
                     />
                     <Button
                         type="button"
-                        label="Yes"
-                        icon="pi pi-check"
+                        label="Oui"
                         class="p-button-danger"
                         :loading="deleteLoading"
                         @click="confirmDelete"
@@ -159,12 +158,12 @@ import { router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import { SquarePen, Trash, Plus } from 'lucide-vue-next';
 import { DataTable, Column, Button, Dialog, useToast } from 'primevue';
-import { route } from 'ziggy-js';
 
 type SortDirection = 'asc' | 'desc';
 
 interface Props {
     title: string;
+    table: string;
     model: string;
     fetchUrl: string;
     createRoute: string;
@@ -237,9 +236,9 @@ const fetchData = async () => {
 
         const url = `${props.fetchUrl}?${params.toString()}`;
         const response = await axios.get(url);
-        data.value = response.data[props.title] || response.data;
+        data.value = response.data[props.table] || response.data;
     } catch (error) {
-        console.error(`Error fetching ${props.title.toLowerCase()}:`, error);
+        console.error(`Error fetching ${props.table.toLowerCase()}:`, error);
     } finally {
         loading.value = false;
     }
@@ -292,7 +291,7 @@ onMounted(() => {
     if (page.props.flash?.success) {
         toast.add({
             severity: 'success',
-            summary: 'Success',
+            summary: 'Succès',
             detail: page.props.flash.success,
             life: 3000,
         });
@@ -301,7 +300,7 @@ onMounted(() => {
     if (page.props.flash?.warning) {
         toast.add({
             severity: 'warn',
-            summary: 'Warning',
+            summary: 'Attention',
             detail: page.props.flash.warning,
             life: 3000,
         });
@@ -310,7 +309,7 @@ onMounted(() => {
     if (page.props.flash?.error) {
         toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: 'Erreur',
             detail: page.props.flash.error,
             life: 3000,
         });

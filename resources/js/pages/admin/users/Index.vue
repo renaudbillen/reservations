@@ -4,6 +4,7 @@
     <AppLayout :breadcrumbs="breadcrumbs">
         <DataTable
             :title="title"
+            :table="table"
             :model="model"
             :fetch-url="route('api.admin.users.index')"
             :create-route="route('admin.users.create')"
@@ -15,7 +16,7 @@
                 per_page: 10,
             }"
         >
-            <Column field="name" header="Name" :sortable="true">
+            <Column field="name" header="Nom" :sortable="true">
                 <template #body="{ data }">
                     <div class="font-medium text-gray-500">
                         {{ data.name }}
@@ -31,7 +32,7 @@
                 </template>
             </Column>
 
-            <Column field="created_at" header="Created At" :sortable="true">
+            <Column field="created_at" header="Date de création" :sortable="true">
                 <template #body="{ data }">
                     <div class="text-gray-500">
                         {{ formatDate(data.created_at) }}
@@ -49,16 +50,17 @@ import { Head } from '@inertiajs/vue3';
 import Column from 'primevue/column';
 import { route } from 'ziggy-js';
 
-const title = 'users';
-const model = 'user';
+const title = 'praticiens';
+const table = 'users';
+const model = 'praticien';
 
 const breadcrumbs = [
     {
-        title: 'Dashboard',
+        title: 'Tableau de bord',
         href: route('dashboard'),
     },
     {
-        title: 'Users',
+        title: 'Praticiens',
         href: route('admin.users.index'),
     },
 ];
@@ -70,5 +72,4 @@ const formatDate = (dateString: string) => {
         day: 'numeric',
     });
 };
-
 </script>

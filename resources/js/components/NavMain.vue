@@ -31,7 +31,6 @@ const filteredItems = computed(() => {
 
 <template>
     <SidebarGroup class="px-2 py-0">
-        <SidebarGroupLabel>Platform</SidebarGroupLabel>
         <SidebarMenu>
             <SidebarMenuItem v-for="item in filteredItems" :key="item.title">
                 <SidebarMenuButton

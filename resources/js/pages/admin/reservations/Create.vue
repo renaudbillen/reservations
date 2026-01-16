@@ -1,8 +1,8 @@
 <template>
-    <AppLayout title="Create Reservation" :breadcrumbs="breadcrumbs">
+    <AppLayout title="Créer une réservation" :breadcrumbs="breadcrumbs">
         <template #header>
             <h2 class="text-xl leading-tight font-semibold text-gray-800">
-                Create Reservation
+                Créer une réservation
             </h2>
         </template>
 
@@ -16,7 +16,7 @@
                             <label
                                 for="room_id"
                                 class="block text-sm font-medium text-gray-700"
-                                >Room</label
+                                >Salle</label
                             >
                             <select
                                 id="room_id"
@@ -27,7 +27,7 @@
                                         form.errors.room_id,
                                 }"
                             >
-                                <option value="">Select a room</option>
+                                <option value="">Sélectionnez une salle</option>
                                 <option
                                     v-for="room in rooms"
                                     :key="room.id"
@@ -49,7 +49,7 @@
                                 <label
                                     for="reservation_date"
                                     class="block text-sm font-medium text-gray-700"
-                                    >Reservation Date</label
+                                    >Date de réservation</label
                                 >
                                 <input
                                     type="date"
@@ -73,7 +73,7 @@
                                 <label
                                     for="reservation_period"
                                     class="block text-sm font-medium text-gray-700"
-                                    >Period</label
+                                    >Période</label
                                 >
                                 <select
                                     id="reservation_period"
@@ -83,9 +83,9 @@
                                         'border-red-300': form.errors.reservation_period,
                                     }"
                                 >
-                                    <option value="">Select a period</option>
-                                    <option value="AM">Morning (AM)</option>
-                                    <option value="PM">Afternoon (PM)</option>
+                                    <option value="">Sélectionnez une période</option>
+                                    <option value="AM">Matin (AM)</option>
+                                    <option value="PM">Après-midi (PM)</option>
                                 </select>
                                 <p
                                     v-if="form.errors.reservation_period"
@@ -100,7 +100,7 @@
                             <label
                                 for="for_user_id"
                                 class="block text-sm font-medium text-gray-700"
-                                >Reservation For</label
+                                >Réservation pour</label
                             >
                             <select
                                 id="for_user_id"
@@ -110,7 +110,7 @@
                                     'border-red-300': form.errors.for_user_id,
                                 }"
                             >
-                                <option value="">Select a user (defaults to you)</option>
+                                <option value="">Sélectionnez un praticien (vous par défaut)</option>
                                 <option
                                     v-for="user in users"
                                     :key="user.id"
@@ -132,15 +132,15 @@
                                 :href="route('admin.reservations.index')"
                                 class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
                             >
-                                Cancel
+                                Annuler
                             </Link>
                             <button
                                 type="submit"
                                 class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
                                 :disabled="form.processing"
                             >
-                                <span v-if="form.processing">Saving...</span>
-                                <span v-else>Save</span>
+                                <span v-if="form.processing">Enregistrement...</span>
+                                <span v-else>Enregistrer</span>
                             </button>
                         </div>
                     </form>
@@ -158,9 +158,9 @@ import { onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: route('dashboard') },
-    { title: 'Reservations', href: route('admin.reservations.index') },
-    { title: 'Create Reservation', href: route('admin.reservations.create') },
+    { title: 'Tableau de bord', href: route('dashboard') },
+    { title: 'Réservations', href: route('admin.reservations.index') },
+    { title: 'Créer une réservation', href: route('admin.reservations.create') },
 ];
 
 const props = defineProps({

@@ -5,7 +5,7 @@
                 <div class="border-b border-gray-200 bg-white p-6">
                     <div class="mb-6 flex items-center justify-between">
                         <h2 class="text-2xl font-semibold text-gray-800">
-                            Edit Vacation: {{ vacation.name }}
+                            Modifier les vacances: {{ vacation.name }}
                         </h2>
                     </div>
 
@@ -23,7 +23,7 @@
                                         }"
                                         required
                                     />
-                                    <label for="name">Name</label>
+                                    <label for="name">Nom</label>
                                 </IftaLabel>
                                 <small v-if="form.errors.name" class="p-error">
                                     {{ form.errors.name }}
@@ -37,7 +37,7 @@
                                     <label
                                         for="start_date"
                                         class="block text-sm font-medium text-gray-700"
-                                        >Start Date</label
+                                        >Date de début</label
                                     >
                                     <input
                                         type="date"
@@ -58,7 +58,7 @@
                                     <label
                                         for="end_date"
                                         class="block text-sm font-medium text-gray-700"
-                                        >End Date</label
+                                        >Date de fin</label
                                     >
                                     <input
                                         type="date"
@@ -87,14 +87,14 @@
                                 severity="secondary"
                                 class="mr-2"
                             >
-                                Cancel
+                                Annuler
                             </Button>
                             <Button
                                 type="submit"
                                 :loading="form.processing"
                                 severity="info"
                             >
-                                Update Vacation
+                                Modifier vacances
                             </Button>
                         </div>
                     </form>
@@ -105,11 +105,11 @@
 </template>
 
 <script setup lang="ts">
-import { Link, router, useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItemType } from '@/types';
 import { route } from 'ziggy-js';
-import { Button, IftaLabel, InputText, Password, Select } from 'primevue';
+import { Button, IftaLabel, InputText } from 'primevue';
 
 const props = defineProps<{
     vacation: {
@@ -148,8 +148,8 @@ const submit = () => {
 };
 
 const breadcrumbs: BreadcrumbItemType[] = [
-    { title: 'Dashboard', href: route('dashboard') },
-    { title: 'Vacations', href: route('admin.vacations.index') },
-    { title: 'Edit', href: route('admin.vacations.edit', props.vacation.id) },
+    { title: 'Tableau de bord', href: route('dashboard') },
+    { title: 'Vacances', href: route('admin.vacations.index') },
+    { title: 'Modifier', href: route('admin.vacations.edit', props.vacation.id) },
 ];
 </script>

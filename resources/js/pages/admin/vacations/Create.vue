@@ -2,7 +2,7 @@
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="mx-auto max-w-2xl bg-white p-6 shadow-xl sm:rounded-lg">
             <h1 class="mb-6 text-2xl font-semibold text-gray-900">
-                Add New Vacation
+                Ajouter des vacances
             </h1>
 
             <form @submit.prevent="submit">
@@ -10,7 +10,7 @@
                     <label
                         for="name"
                         class="block text-sm font-medium text-gray-700"
-                        >Name</label
+                        >Nom</label
                     >
                     <input
                         type="text"
@@ -32,7 +32,7 @@
                         <label
                             for="start_date"
                             class="block text-sm font-medium text-gray-700"
-                            >Start Date</label
+                            >Date de début</label
                         >
                         <input
                             type="date"
@@ -53,7 +53,7 @@
                         <label
                             for="end_date"
                             class="block text-sm font-medium text-gray-700"
-                            >End Date</label
+                            >Date de fin</label
                         >
                         <input
                             type="date"
@@ -77,14 +77,14 @@
                         @click="router.visit(route('admin.vacations.index'))"
                         severity="secondary"
                     >
-                        Cancel
+                        Annuler
                     </Button>
                     <Button
                         type="submit"
                         severity="contrast"
                         :disabled="form.processing"
                     >
-                        Save
+                        Ajouter
                     </Button>
                 </div>
             </form>
@@ -120,8 +120,8 @@ const submit = () => {
 };
 
 const breadcrumbs: BreadcrumbItemType[] = [
-    { title: 'Dashboard', href: route('dashboard') },
-    { title: 'Vacations', href: route('admin.vacations.index') },
-    { title: 'Create', href: route('admin.vacations.create') },
+    { title: 'Tableau de bord', href: route('dashboard') },
+    { title: 'Vacances', href: route('admin.vacations.index') },
+    { title: 'Ajouter', href: route('admin.vacations.create') },
 ];
 </script>

@@ -42,10 +42,10 @@ import { Head, Link } from '@inertiajs/vue3';
                 <div
                     class="flex-1 rounded-br-lg rounded-bl-lg bg-white p-6 pb-12 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] lg:rounded-tl-lg lg:rounded-br-none lg:p-20 dark:bg-[#161615] dark:text-[#EDEDEC] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]"
                 >
-                    <h1 class="mb-1 font-medium">Let's get started</h1>
+                    <h1 class="mb-1 font-medium">Commençons</h1>
                     <p class="mb-2 text-[#706f6c] dark:text-[#A1A09A]">
-                        Laravel has an incredibly rich ecosystem. <br />We
-                        suggest starting with the following.
+                        Laravel dispose d'un écosystème incroyablement riche. <br />
+                        Nous vous suggérons de commencer par les éléments suivants.
                     </p>
                     <ul class="mb-4 flex flex-col lg:mb-6">
                         <li
@@ -63,7 +63,7 @@ import { Head, Link } from '@inertiajs/vue3';
                                 </span>
                             </span>
                             <span>
-                                Read the
+                                Lisez la
                                 <a
                                     href="https://laravel.com/docs"
                                     target="_blank"
@@ -102,7 +102,7 @@ import { Head, Link } from '@inertiajs/vue3';
                                 </span>
                             </span>
                             <span>
-                                Watch video tutorials at
+                                Regardez les tutoriels vidéo sur
                                 <a
                                     href="https://laracasts.com"
                                     target="_blank"
@@ -134,7 +134,7 @@ import { Head, Link } from '@inertiajs/vue3';
                                 target="_blank"
                                 class="inline-block rounded-sm border border-black bg-[#1b1b18] px-5 py-1.5 text-sm leading-normal text-white hover:border-black hover:bg-black dark:border-[#eeeeec] dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:hover:border-white dark:hover:bg-white"
                             >
-                                Deploy now
+                                Déployer maintenant
                             </a>
                         </li>
                     </ul>

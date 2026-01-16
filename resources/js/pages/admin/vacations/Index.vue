@@ -2,6 +2,7 @@
     <AppLayout :breadcrumbs="breadcrumbs">
         <DataTable
             :title="title"
+            :table="table"
             :model="model"
             :fetch-url="route('api.admin.vacations.index')"
             :create-route="route('admin.vacations.create')"
@@ -13,17 +14,17 @@
                 per_page: 10,
             }"
         >
-            <Column field="name" header="Name" :sortable="true">
+            <Column field="name" header="Nom" :sortable="true">
                 <template #body="{ data }">
                     {{ data.name }}
                 </template>
             </Column>
-            <Column field="start_date" header="Start Date" :sortable="true">
+            <Column field="start_date" header="Date de début" :sortable="true">
                 <template #body="{ data }">
                     {{ formatDate(data.start_date) }}
                 </template>
             </Column>
-            <Column field="end_date" header="End Date" :sortable="true">
+            <Column field="end_date" header="Date de fin" :sortable="true">
                 <template #body="{ data }">
                     {{ formatDate(data.end_date) }}
                 </template>
@@ -40,15 +41,16 @@ import { format } from 'date-fns';
 import type { BreadcrumbItemType } from '@/types';
 import { route } from 'ziggy-js';
 
-const title = 'vacations';
-const model = 'vacation';
+const title = 'vacances';
+const table = 'vacations';
+const model = 'vacances';
 
 const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'MMMM d, yyyy');
 };
 
 const breadcrumbs: BreadcrumbItemType[] = [
-    { title: 'Dashboard', href: route('dashboard') },
-    { title: 'Vacations', href: route('admin.vacations.index') },
+    { title: 'Tableau de bord', href: route('dashboard') },
+    { title: 'Vacances', href: route('admin.vacations.index') },
 ];
 </script>

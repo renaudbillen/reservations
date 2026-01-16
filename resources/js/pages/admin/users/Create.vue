@@ -6,7 +6,7 @@
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="border-b border-gray-200 bg-white p-6">
                     <h2 class="mb-6 text-2xl font-semibold text-gray-800">
-                        Create New User
+                        Ajouter un nouveau praticien
                     </h2>
 
                     <form @submit.prevent="submit" autocomplete="off">
@@ -20,7 +20,7 @@
                                         class="w-full"
                                         required
                                     />
-                                    <label for="name">Name</label>
+                                    <label for="name">Nom</label>
                                 </IftaLabel>
                                 <div
                                     v-if="form.errors.name"
@@ -59,7 +59,7 @@
                                         toggleMask
                                         required
                                     />
-                                    <label for="password">Password</label>
+                                    <label for="password">Mot de passe</label>
                                 </IftaLabel>
                                 <div
                                     v-if="form.errors.password"
@@ -80,7 +80,7 @@
                                         required
                                     />
                                     <label for="password_confirmation"
-                                        >Confirm Password</label
+                                        >Confirmer le mot de passe</label
                                     >
                                 </IftaLabel>
                             </div>
@@ -92,7 +92,7 @@
                                 rel="noopener"
                                 severity="secondary"
                             >
-                                Cancel
+                                Annuler
                             </Button>
 
                             <Button
@@ -101,7 +101,7 @@
                                 severity="contrast"
                                 class="ml-1"
                             >
-                                <Plus /> Add
+                                <Plus /> Ajouter
                             </Button>
                         </div>
                     </form>
@@ -131,15 +131,15 @@ interface BreadcrumbItem {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Tableau de bord',
         href: route('dashboard'),
     },
     {
-        title: 'Users',
+        title: 'Praticiens',
         href: route('admin.users.index'),
     },
     {
-        title: 'Create User',
+        title: 'Ajouter un praticien',
         href: route('admin.users.create'),
     },
 ];
@@ -158,8 +158,8 @@ const submit = () => {
         onSuccess: () => {
             toast.add({
                 severity: 'success',
-                summary: 'Success',
-                detail: 'User created successfully',
+                summary: 'Succès',
+                detail: 'Praticien créé avec succès',
                 life: 3000,
             });
         },
@@ -167,8 +167,8 @@ const submit = () => {
             if (Object.keys(errors).length === 0) {
                 toast.add({
                     severity: 'error',
-                    summary: 'Error',
-                    detail: 'Failed to create user. Please try again.',
+                    summary: 'Erreur',
+                    detail: 'Le praticien n\'a pas pu être créé. Veuillez réessayer.',
                     life: 3000,
                 });
             }

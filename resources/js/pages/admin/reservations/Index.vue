@@ -7,7 +7,7 @@
                     <button
                         @click="loadPreviousWeek"
                         class="rounded-full p-2 hover:bg-gray-100"
-                        title="Previous week"
+                        title="Semaine précédente"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@
 
                     <div class="text-center">
                         <h2 class="text-lg font-semibold">
-                            Week {{ week }}, {{ year }}
+                            Semaine {{ week }}, {{ année }}
                         </h2>
                         <p class="text-sm text-gray-600">
                             {{ formatDate(weekStartDate) }} -
@@ -36,7 +36,7 @@
                     <button
                         @click="loadNextWeek"
                         class="rounded-full p-2 hover:bg-gray-100"
-                        title="Next week"
+                        title="Semaine suivante"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,7 @@
                     rel="noopener"
                     severity="contrast"
                 >
-                    New Reservation
+                    Nouvelle réservation
                 </Button>
                 <Button
                     @click="
@@ -70,7 +70,7 @@
                     rel="noopener"
                     severity="contrast"
                 >
-                    New Periodic Reservation
+                    Nouvelle réservation périodique
                 </Button>
             </div>
 
@@ -169,7 +169,6 @@ import { computed } from 'vue';
 import { addWeeks, startOfWeek, endOfWeek, format, parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Button } from 'primevue';
-import { Plus } from 'lucide-vue-next';
 
 const props = defineProps({
     week: Number,
@@ -224,9 +223,9 @@ const getReservationInfo = (
 ) => {
     const reservation = getReservation(roomId, date, period);
     if (reservation) {
-        return reservation.for_user?.name || 'Reserved';
+        return reservation.for_user?.name || 'Réservé';
     }
-    return 'Available';
+    return 'Disponible';
 };
 
 // Handle time slot click
@@ -311,7 +310,7 @@ const formatDayName = (dateString: string) => {
 };
 
 const breadcrumbs: BreadcrumbItemType[] = [
-    { title: 'Dashboard', href: route('dashboard') },
-    { title: 'Reservations', href: route('admin.reservations.index') },
+    { title: 'Tableau de bord', href: route('dashboard') },
+    { title: 'Réservations', href: route('admin.reservations.index') },
 ];
 </script>
