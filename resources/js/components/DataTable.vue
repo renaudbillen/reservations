@@ -10,7 +10,7 @@
                     @click="router.visit(props.createRoute)"
                     class="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out hover:bg-blue-700 focus:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:bg-blue-900"
                 >
-                    <Plus /> Ajouter {{ model }}
+                    <Plus />
                 </Button>
             </div>
         </div>
@@ -86,7 +86,7 @@
                     style="width: 12rem"
                 >
                     <template #body="slotProps">
-                        <div class="flex space-x-2">
+                        <div class="flex space-x-2 justify-center">
                             <Button
                                 @click="
                                     router.visit(
@@ -96,14 +96,14 @@
                                 rel="noopener"
                                 severity="info"
                             >
-                                <SquarePen class="h-5 w-5" /> Modifier
+                                <SquarePen class="h-5 w-5" />
                             </Button>
                             <Button
                                 v-if="can.user_destroy"
                                 @click="handleDelete(slotProps.data)"
                                 severity="danger"
                             >
-                                <Trash class="h-5 w-5" /> Supprimer
+                                <Trash class="h-5 w-5" />
                             </Button>
                         </div>
                     </template>
