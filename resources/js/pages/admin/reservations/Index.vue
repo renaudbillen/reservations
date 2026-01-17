@@ -97,7 +97,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="room in rooms" :key="room.id">
-                            <td class="border p-2 font-medium">
+                            <td class="border p-2 font-medium text-center">
                                 {{ room.name }}
                             </td>
                             <td
@@ -105,7 +105,7 @@
                                 :key="`${room.id}-${day}`"
                                 class="border p-1"
                             >
-                                <div class="grid grid-cols-2 gap-1">
+                                <div class="grid grid-cols-2 gap-1 text-center">
                                     <!-- AM Slot -->
                                     <div
                                         class="h-16 p-2 text-xs"
@@ -225,7 +225,7 @@ const getReservationInfo = (
     if (reservation) {
         return reservation.for_user?.name || 'Réservé';
     }
-    return 'Disponible';
+    return 'Disponible ' + period;
 };
 
 // Handle time slot click
