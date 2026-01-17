@@ -94,7 +94,7 @@
                                 :loading="form.processing"
                                 severity="info"
                             >
-                                Modifier vacances
+                                Sauver
                             </Button>
                         </div>
                     </form>

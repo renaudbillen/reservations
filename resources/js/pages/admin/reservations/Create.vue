@@ -16,7 +16,7 @@
                             <label
                                 for="room_id"
                                 class="block text-sm font-medium text-gray-700"
-                                >Salle</label
+                                >Cabinet</label
                             >
                             <select
                                 id="room_id"

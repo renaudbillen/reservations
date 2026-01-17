@@ -118,7 +118,7 @@
                                 :loading="form.processing"
                                 severity="info"
                             >
-                                Modifier le praticien
+                                Sauver
                             </Button>
                         </div>
                     </form>
