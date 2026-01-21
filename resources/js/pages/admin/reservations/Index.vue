@@ -25,7 +25,7 @@
 
                     <div class="text-center">
                         <h2 class="text-lg font-semibold">
-                            Semaine {{ week }}, {{ année }}
+                            Semaine {{ week }}, {{ year }}
                         </h2>
                         <p class="text-sm text-gray-600">
                             {{ formatDate(weekStartDate) }} -
@@ -242,10 +242,40 @@ const handleTimeSlotClick = (
     });
 };
 
+// Helper function to get the current week number and year
+const getCurrentWeekAndYear = () => {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const pastDaysOfYear = (now.getTime() - startOfYear.getTime()) / 86400000;
+    const currentWeek = Math.ceil((pastDaysOfYear + startOfYear.getDay() + 1) / 7) - 1;
+    return { currentWeek, currentYear: now.getFullYear() };
+};
+
+// Check if the current view is in the past compared to the current week
+const isPastWeek = (week: number, year: number) => {
+    const { currentWeek, currentYear } = getCurrentWeekAndYear();
+    return year < currentYear || (year === currentYear && week < currentWeek);
+};
+
+// Check if we've reached the 3-week limit
+const isThreeWeeksAhead = (week: number, year: number) => {
+    const { currentWeek, currentYear } = getCurrentWeekAndYear();
+    if (year > currentYear) {
+        return week > 2;
+    }
+
+    return week >= currentWeek + 3;
+};
+
 // Navigation functions
 const loadPreviousWeek = () => {
     const currentWeek = parseInt(props.week.toString(), 10);
     const currentYear = parseInt(props.year.toString(), 10);
+
+    // Don't allow going to previous weeks from the current week
+    if (isPastWeek(currentWeek - 1, currentYear)) {
+        return;
+    }
 
     let prevWeek = currentWeek - 1;
     let prevYear = currentYear;
@@ -264,6 +294,11 @@ const loadPreviousWeek = () => {
 const loadNextWeek = () => {
     const currentWeek = parseInt(props.week.toString(), 10);
     const currentYear = parseInt(props.year.toString(), 10);
+
+    // Don't allow going more than 3 weeks ahead
+    if (isThreeWeeksAhead(currentWeek, currentYear)) {
+        return;
+    }
 
     let nextWeek = currentWeek + 1;
     let nextYear = currentYear;

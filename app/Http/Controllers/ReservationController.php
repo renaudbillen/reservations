@@ -16,14 +16,45 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      */
-// In ReservationController.php
     public function index(Request $request)
     {
-        $week = $request->input('week', now()->weekOfYear);
-        $year = $request->input('year', now()->year);
+        $currentDate = now();
+        $currentWeek = $currentDate->weekOfYear;
+        $currentYear = $currentDate->year;
 
-        // Get start and end of the week
-        $startOfWeek = Carbon::now()->setISODate($year, $week)->startOfWeek();
+        // Get requested week and year, default to current
+        $requestedWeek = (int)$request->input('week', $currentWeek);
+        $requestedYear = (int)$request->input('year', $currentYear);
+
+        // Validate week and year
+        $shouldRedirect = false;
+
+        if (!auth()->user()->hasRole('Super Admin')) {
+            // Existing validation logic here
+            if ($requestedYear < $currentYear ||
+                ($requestedYear === $currentYear && $requestedWeek < $currentWeek)) {
+                $shouldRedirect = true;
+            } elseif ($requestedYear > $currentYear) {
+                $weeksInYear = 52;
+                $weeksDifference = ($weeksInYear - $currentWeek) + $requestedWeek;
+                if ($weeksDifference > 3) {
+                    $shouldRedirect = true;
+                }
+            } elseif ($requestedWeek > ($currentWeek + 3)) {
+                $shouldRedirect = true;
+            }
+        }
+        
+        // Redirect if needed
+        if ($shouldRedirect) {
+            return redirect()->route('admin.reservations.index', [
+                'week' => $currentWeek,
+                'year' => $currentYear
+            ]);
+        }
+
+        // Get start and end of the requested week
+        $startOfWeek = Carbon::now()->setISODate($requestedYear, $requestedWeek)->startOfWeek();
         $endOfWeek = (clone $startOfWeek)->endOfWeek();
 
         // Get all rooms
@@ -47,8 +78,8 @@ class ReservationController extends Controller
         }
 
         return Inertia::render('admin/reservations/Index', [
-            'week' => $week,
-            'year' => $year,
+            'week' => $requestedWeek,
+            'year' => $requestedYear,
             'days' => $days,
             'rooms' => $rooms,
             'reservations' => $reservations
