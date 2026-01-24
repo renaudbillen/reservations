@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Mail\Registration;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
@@ -35,6 +37,8 @@ class UserController extends Controller
         ]);
 
         $user->syncRoles(2);
+
+        Mail::to($user->email)->send(new Registration($user, $validated['password']));
 
         return redirect()->route('admin.users.index');
     }
