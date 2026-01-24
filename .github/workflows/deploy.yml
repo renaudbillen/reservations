@@ -34,9 +34,6 @@ jobs:
       - name: Cleanings
         run: rm -rf .git &&rm -rf .github && rm -rf .idea && rm -rf tests && rm -f .DS_Store
 
-      - name: Handle Settings
-        run: rm -f .env && mv .env.prod .env
-
       - name: Synchronize Files To Server
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
