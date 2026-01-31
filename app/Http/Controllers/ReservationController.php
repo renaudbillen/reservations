@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateReservationRequest;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
+use App\Repository\ReservationRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -44,18 +45,21 @@ class ReservationController extends Controller
                 $shouldRedirect = true;
             }
         }
-        
+
         // Redirect if needed
         if ($shouldRedirect) {
-            return redirect()->route('admin.reservations.index', [
-                'week' => $currentWeek,
-                'year' => $currentYear
-            ]);
+            return redirect()->route(
+                'admin.reservations.index',
+                [
+                    'week' => $currentWeek,
+                    'year' => $currentYear,
+                ]
+            );
         }
 
         // Get start and end of the requested week
         $startOfWeek = Carbon::now()->setISODate($requestedYear, $requestedWeek)->startOfWeek();
-        $endOfWeek = (clone $startOfWeek)->endOfWeek();
+        $endOfWeek = (clone $startOfWeek)->endOfWeek(-1);
 
         // Get all rooms
         $rooms = Room::all();
@@ -63,7 +67,6 @@ class ReservationController extends Controller
         // Get reservations for the week
         $reservations = Reservation::with(['byUser', 'forUser', 'room'])
             ->whereBetween('reservation_date', [$startOfWeek, $endOfWeek])
-            ->orWhereBetween('reservation_date', [$startOfWeek, $endOfWeek])
             ->get()
             ->groupBy(['room_id', function ($reservation) {
                 return $reservation->reservation_date->format('Y-m-d');
@@ -82,7 +85,7 @@ class ReservationController extends Controller
             'year' => $requestedYear,
             'days' => $days,
             'rooms' => $rooms,
-            'reservations' => $reservations
+            'reservations' => $reservations,
         ]);
     }
 
@@ -110,9 +113,22 @@ class ReservationController extends Controller
         // If for_user_id is not provided, default to the authenticated user
         $validated['for_user_id'] = $validated['for_user_id'] ?? auth()->id();
 
+        if (
+            ReservationRepository::checkIsAvailable(
+                $validated['room_id'],
+                $validated['reservation_date'],
+                $validated['reservation_period']
+            )
+        ) {
+            return redirect()
+                ->route('admin.reservations.index')
+                ->with('Danger', 'Reservation no possible, the room is not available.');
+        }
+
         Reservation::create($validated);
 
-        return redirect()->route('admin.reservations.index')
+        return redirect()
+            ->route('admin.reservations.index')
             ->with('success', 'Reservation created successfully.');
     }
 

@@ -57,6 +57,7 @@
             <!-- Action Buttons -->
             <div class="mb-6 flex justify-end space-x-4">
                 <Button
+                    v-if="can('reservation_create')"
                     @click="router.visit(route('admin.reservations.create'))"
                     rel="noopener"
                     severity="contrast"
@@ -64,11 +65,13 @@
                     Nouvelle réservation
                 </Button>
                 <Button
+                    v-if="can('reservation_periodic_create')"
                     @click="
                         router.visit(route('admin.periodicReservations.create'))
                     "
                     rel="noopener"
                     severity="contrast"
+
                 >
                     Nouvelle réservation périodique
                 </Button>
@@ -105,7 +108,7 @@
                                 :key="`${room.id}-${day}`"
                                 class="border p-1"
                             >
-                                <div class="grid grid-cols-2 gap-1 text-center">
+                                <div class="flex flex-col gap-1 text-center">
                                     <!-- AM Slot -->
                                     <div
                                         class="h-16 p-2 text-xs"
@@ -161,7 +164,7 @@
 </template>
 
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItemType } from '@/types';
 import { route } from 'ziggy-js';
@@ -169,6 +172,7 @@ import { computed } from 'vue';
 import { addWeeks, startOfWeek, endOfWeek, format, parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Button } from 'primevue';
+import { usePermissions } from '@/composables/usePermissions';
 
 const props = defineProps({
     week: Number,
@@ -177,6 +181,8 @@ const props = defineProps({
     rooms: Array,
     reservations: Object,
 });
+
+const { can } = usePermissions();
 
 // Format day number (e.g., "01", "15")
 const formatDay = (dateString: string) => {
@@ -209,9 +215,7 @@ const getReservation = (roomId: number, date: string, period: 'AM' | 'PM') => {
     if (!dayReservations) return null;
 
     return dayReservations.find((reservation) => {
-        const startHour = new Date(reservation.start_time).getHours();
-        const isAM = startHour < 12;
-        return (period === 'AM' && isAM) || (period === 'PM' && !isAM);
+        return reservation.reservation_period === period;
     });
 };
 
@@ -223,7 +227,18 @@ const getReservationInfo = (
 ) => {
     const reservation = getReservation(roomId, date, period);
     if (reservation) {
-        return reservation.for_user?.name || 'Réservé';
+        const page = usePage();
+        const currentUserId = page.props.auth?.user?.id;
+        const isAdmin = can('reservation_view_all');
+        const isReservationOwner = currentUserId === reservation.by_user_id;
+
+        // Show user name only if admin or reservation owner
+        if (isAdmin || isReservationOwner) {
+            return reservation.for_user?.name || 'Réservé';
+        }
+
+        // Otherwise show generic "Reservé" + period
+        return 'Réservé ' + period;
     }
     return 'Disponible ' + period;
 };

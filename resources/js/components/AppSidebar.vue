@@ -34,11 +34,13 @@ const mainNavItems: NavItem[] = [
         title: 'Vacances',
         href: route('admin.vacations.index'),
         icon: Plane,
+        can: 'vacation_index',
     },
     {
         title: 'Réservations',
         href: route('admin.reservations.index'),
         icon: Calendar,
+        can: 'reservation_index',
     },
 ];
 
