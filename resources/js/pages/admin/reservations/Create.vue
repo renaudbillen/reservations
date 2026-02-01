@@ -60,6 +60,7 @@
                                         'border-red-300': form.errors.reservation_date,
                                     }"
                                     min="2026-01-01"
+                                    :max="maxDate"
                                 />
                                 <p
                                     v-if="form.errors.reservation_date"
@@ -154,8 +155,9 @@
 import { useForm, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { route } from 'ziggy-js';
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
+import { addWeeks, startOfWeek, format } from 'date-fns';
 
 const breadcrumbs = [
     { title: 'Tableau de bord', href: route('dashboard') },
@@ -176,6 +178,25 @@ const props = defineProps({
 
 const page = usePage();
 const queryParams = new URLSearchParams(window.location.search);
+
+// Check if current user is Super Admin
+const isSuperAdmin = computed(() => {
+    const user = page.props.auth?.user;
+    return user?.roles?.includes('Super Admin') || false;
+});
+
+// Calculate max date (3 full weeks after current week) for non-Super Admin users
+const maxDate = computed(() => {
+    if (isSuperAdmin.value) {
+        return null; // No restriction for Super Admin
+    }
+    const currentWeekStart = startOfWeek(new Date(), { weekStartsOn: 1 }); // Monday
+    const currentWeekEnd = addWeeks(currentWeekStart, 1); // Start of next week
+    const maxAllowedDate = addWeeks(currentWeekEnd, 3); // 3 full weeks after current week
+    const maxDateSaturday = new Date(maxAllowedDate);
+    maxDateSaturday.setDate(maxDateSaturday.getDate() - 1); // Subtract 1 day to end on Saturday
+    return format(maxDateSaturday, 'yyyy-MM-dd');
+});
 
 const form = useForm({
     room_id: queryParams.get('room_id') || '',

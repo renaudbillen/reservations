@@ -62,6 +62,7 @@
                                             form.errors.reservation_date,
                                     }"
                                     min="2026-01-01"
+                                    :max="maxDate"
                                 />
                                 <p
                                     v-if="form.errors.reservation_date"
@@ -86,7 +87,9 @@
                                             form.errors.reservation_period,
                                     }"
                                 >
-                                    <option value="">Sélectionnez une période</option>
+                                    <option value="">
+                                        Sélectionnez une période
+                                    </option>
                                     <option value="AM">Matin</option>
                                     <option value="PM">Après-midi</option>
                                 </select>
@@ -140,11 +143,36 @@ import { useForm, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { router } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
+import { addWeeks, startOfWeek, format } from 'date-fns';
 
 const props = defineProps({
     reservation: {
         type: Array,
     },
+});
+
+const page = usePage();
+
+// Check if current user is Super Admin
+const isSuperAdmin = computed(() => {
+    const user = page.props.auth?.user;
+    return user?.roles?.includes('Super Admin') || false;
+});
+
+// Calculate max date (3 full weeks after current week) for non-Super Admin users
+const maxDate = computed(() => {
+    if (isSuperAdmin.value) {
+        return null; // No restriction for Super Admin
+    }
+
+    const currentWeekStart = startOfWeek(new Date(), { weekStartsOn: 1 }); // Monday
+    const currentWeekEnd = addWeeks(currentWeekStart, 1); // Start of next week
+    const maxAllowedDate = addWeeks(currentWeekEnd, 3); // 3 full weeks after current week
+    const maxDateSaturday = new Date(maxAllowedDate);
+    maxDateSaturday.setDate(maxDateSaturday.getDate() - 1); // Subtract 1 day to end on Saturday
+    return format(maxDateSaturday, 'yyyy-MM-dd');
 });
 
 const form = useForm({

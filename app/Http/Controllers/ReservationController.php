@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
+use App\Mail\ReservationCreated;
+use App\Mail\ReservationNotification;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
 use App\Repository\ReservationRepository;
+use App\Enums\RoleEnum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class ReservationController extends Controller
@@ -113,19 +117,47 @@ class ReservationController extends Controller
         // If for_user_id is not provided, default to the authenticated user
         $validated['for_user_id'] = $validated['for_user_id'] ?? auth()->id();
 
-        if (
-            ReservationRepository::checkIsAvailable(
-                $validated['room_id'],
-                $validated['reservation_date'],
-                $validated['reservation_period']
-            )
-        ) {
-            return redirect()
-                ->route('admin.reservations.index')
-                ->with('Danger', 'Reservation no possible, the room is not available.');
+        // Check if non-Super Admin is trying to reserve beyond 3 weeks
+        if (!auth()->user()->hasRole(RoleEnum::SUPER_ADMIN)) {
+            $reservationDate = Carbon::parse($validated['reservation_date']);
+            $currentWeekEnd = Carbon::now()->endOfWeek();
+            $maxAllowedDate = $currentWeekEnd->copy()->addWeeks(3)->subDay(); // Saturday of 3rd week
+
+            if ($reservationDate->gt($maxAllowedDate)) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'You cannot make reservations more than 3 weeks in advance.');
+            }
         }
 
-        Reservation::create($validated);
+        // Check if room is available
+        if (!ReservationRepository::checkIsAvailable(
+            $validated['room_id'],
+            $validated['reservation_date'],
+            $validated['reservation_period']
+        )) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Reservation not possible, the room is not available.');
+        }
+
+        $reservation = Reservation::create($validated);
+
+        // Load relationships for emails
+        $reservation->load(['room', 'byUser', 'forUser']);
+
+        // Send confirmation email to the user who made the reservation
+        Mail::to($reservation->forUser->email)->send(new ReservationCreated($reservation));
+
+        // Send notification email to Super Admins if the user is not a Super Admin
+        if (!auth()->user()->hasRole(RoleEnum::SUPER_ADMIN)) {
+            $superAdmins = User::role(RoleEnum::SUPER_ADMIN)->get();
+            foreach ($superAdmins as $admin) {
+                Mail::to($admin->email)->send(new ReservationNotification($reservation));
+            }
+        }
+
 
         return redirect()
             ->route('admin.reservations.index')
@@ -153,6 +185,21 @@ class ReservationController extends Controller
     public function update(UpdateReservationRequest $request, Reservation $reservation)
     {
         $validated = $request->validated();
+
+        // Check if non-Super Admin is trying to update reservation beyond 3 weeks
+        if (!auth()->user()->hasRole(RoleEnum::SUPER_ADMIN)) {
+            $reservationDate = Carbon::parse($validated['reservation_date']);
+            $currentWeekStart = Carbon::now()->startOfWeek();
+            $currentWeekEnd = Carbon::now()->endOfWeek();
+            $maxAllowedDate = $currentWeekEnd->copy()->addWeeks(3)->subDay(); // Saturday of 3rd week
+
+            if ($reservationDate->gt($maxAllowedDate)) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'You cannot make reservations more than 3 weeks in advance.');
+            }
+        }
+
         $reservation->update($validated);
 
         return redirect()->route('admin.reservations.index')
