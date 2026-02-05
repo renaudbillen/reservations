@@ -158,7 +158,6 @@ class ReservationController extends Controller
             }
         }
 
-
         return redirect()
             ->route('admin.reservations.index')
             ->with('success', 'Reservation created successfully.');

@@ -39,7 +39,6 @@ class Reservation extends Model
      */
     public const PERIODS = ['AM', 'PM'];
 
-
     /**
      * Get the room that owns the reservation.
      */
@@ -51,7 +50,7 @@ class Reservation extends Model
     /**
      * Get the user who made the reservation.
      */
-    public function byUser(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'by_user_id');
     }
@@ -62,5 +61,13 @@ class Reservation extends Model
     public function forUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'for_user_id');
+    }
+
+    /**
+     * Get the user who made the reservation (alias for user()).
+     */
+    public function byUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'by_user_id');
     }
 }

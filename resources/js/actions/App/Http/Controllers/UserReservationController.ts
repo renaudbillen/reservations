@@ -1,8 +1,8 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
-* @see \App\Http\Controllers\ReservationController::index
-* @see app/Http/Controllers/ReservationController.php:24
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::index
+* @see app/Http/Controllers/UserReservationController.php:15
+* @route '/reservations'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
@@ -11,22 +11,22 @@ export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 index.definition = {
     methods: ["get","head"],
-    url: '/admin/reservations',
+    url: '/reservations',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\ReservationController::index
-* @see app/Http/Controllers/ReservationController.php:24
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::index
+* @see app/Http/Controllers/UserReservationController.php:15
+* @route '/reservations'
 */
 index.url = (options?: RouteQueryOptions) => {
     return index.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\ReservationController::index
-* @see app/Http/Controllers/ReservationController.php:24
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::index
+* @see app/Http/Controllers/UserReservationController.php:15
+* @route '/reservations'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
@@ -34,9 +34,9 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::index
-* @see app/Http/Controllers/ReservationController.php:24
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::index
+* @see app/Http/Controllers/UserReservationController.php:15
+* @route '/reservations'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(options),
@@ -44,9 +44,9 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::index
-* @see app/Http/Controllers/ReservationController.php:24
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::index
+* @see app/Http/Controllers/UserReservationController.php:15
+* @route '/reservations'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: index.url(options),
@@ -54,9 +54,9 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::index
-* @see app/Http/Controllers/ReservationController.php:24
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::index
+* @see app/Http/Controllers/UserReservationController.php:15
+* @route '/reservations'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: index.url(options),
@@ -64,9 +64,9 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::index
-* @see app/Http/Controllers/ReservationController.php:24
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::index
+* @see app/Http/Controllers/UserReservationController.php:15
+* @route '/reservations'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: index.url({
@@ -81,9 +81,9 @@ indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 index.form = indexForm
 
 /**
-* @see \App\Http\Controllers\ReservationController::create
-* @see app/Http/Controllers/ReservationController.php:99
-* @route '/admin/reservations/create'
+* @see \App\Http\Controllers\UserReservationController::create
+* @see app/Http/Controllers/UserReservationController.php:49
+* @route '/reservations/create'
 */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -92,22 +92,22 @@ export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => (
 
 create.definition = {
     methods: ["get","head"],
-    url: '/admin/reservations/create',
+    url: '/reservations/create',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\ReservationController::create
-* @see app/Http/Controllers/ReservationController.php:99
-* @route '/admin/reservations/create'
+* @see \App\Http\Controllers\UserReservationController::create
+* @see app/Http/Controllers/UserReservationController.php:49
+* @route '/reservations/create'
 */
 create.url = (options?: RouteQueryOptions) => {
     return create.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\ReservationController::create
-* @see app/Http/Controllers/ReservationController.php:99
-* @route '/admin/reservations/create'
+* @see \App\Http\Controllers\UserReservationController::create
+* @see app/Http/Controllers/UserReservationController.php:49
+* @route '/reservations/create'
 */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -115,9 +115,9 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::create
-* @see app/Http/Controllers/ReservationController.php:99
-* @route '/admin/reservations/create'
+* @see \App\Http\Controllers\UserReservationController::create
+* @see app/Http/Controllers/UserReservationController.php:49
+* @route '/reservations/create'
 */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: create.url(options),
@@ -125,9 +125,9 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::create
-* @see app/Http/Controllers/ReservationController.php:99
-* @route '/admin/reservations/create'
+* @see \App\Http\Controllers\UserReservationController::create
+* @see app/Http/Controllers/UserReservationController.php:49
+* @route '/reservations/create'
 */
 const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: create.url(options),
@@ -135,9 +135,9 @@ const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => 
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::create
-* @see app/Http/Controllers/ReservationController.php:99
-* @route '/admin/reservations/create'
+* @see \App\Http\Controllers\UserReservationController::create
+* @see app/Http/Controllers/UserReservationController.php:49
+* @route '/reservations/create'
 */
 createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: create.url(options),
@@ -145,9 +145,9 @@ createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::create
-* @see app/Http/Controllers/ReservationController.php:99
-* @route '/admin/reservations/create'
+* @see \App\Http\Controllers\UserReservationController::create
+* @see app/Http/Controllers/UserReservationController.php:49
+* @route '/reservations/create'
 */
 createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: create.url({
@@ -162,9 +162,9 @@ createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 create.form = createForm
 
 /**
-* @see \App\Http\Controllers\ReservationController::store
-* @see app/Http/Controllers/ReservationController.php:113
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::store
+* @see app/Http/Controllers/UserReservationController.php:60
+* @route '/reservations'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -173,22 +173,22 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '/admin/reservations',
+    url: '/reservations',
 } satisfies RouteDefinition<["post"]>
 
 /**
-* @see \App\Http\Controllers\ReservationController::store
-* @see app/Http/Controllers/ReservationController.php:113
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::store
+* @see app/Http/Controllers/UserReservationController.php:60
+* @route '/reservations'
 */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\ReservationController::store
-* @see app/Http/Controllers/ReservationController.php:113
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::store
+* @see app/Http/Controllers/UserReservationController.php:60
+* @route '/reservations'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -196,9 +196,9 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::store
-* @see app/Http/Controllers/ReservationController.php:113
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::store
+* @see app/Http/Controllers/UserReservationController.php:60
+* @route '/reservations'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: store.url(options),
@@ -206,9 +206,9 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::store
-* @see app/Http/Controllers/ReservationController.php:113
-* @route '/admin/reservations'
+* @see \App\Http\Controllers\UserReservationController::store
+* @see app/Http/Controllers/UserReservationController.php:60
+* @route '/reservations'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: store.url(options),
@@ -218,28 +218,32 @@ storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => (
 store.form = storeForm
 
 /**
-* @see \App\Http\Controllers\ReservationController::show
-* @see app/Http/Controllers/ReservationController.php:0
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::show
+* @see app/Http/Controllers/UserReservationController.php:77
+* @route '/reservations/{reservation}'
 */
-export const show = (args: { reservation: string | number } | [reservation: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 
 show.definition = {
     methods: ["get","head"],
-    url: '/admin/reservations/{reservation}',
+    url: '/reservations/{reservation}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\ReservationController::show
-* @see app/Http/Controllers/ReservationController.php:0
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::show
+* @see app/Http/Controllers/UserReservationController.php:77
+* @route '/reservations/{reservation}'
 */
-show.url = (args: { reservation: string | number } | [reservation: string | number ] | string | number, options?: RouteQueryOptions) => {
+show.url = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { reservation: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { reservation: args.id }
     }
 
     if (Array.isArray(args)) {
@@ -251,7 +255,9 @@ show.url = (args: { reservation: string | number } | [reservation: string | numb
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-        reservation: args.reservation,
+        reservation: typeof args.reservation === 'object'
+        ? args.reservation.id
+        : args.reservation,
     }
 
     return show.definition.url
@@ -260,51 +266,51 @@ show.url = (args: { reservation: string | number } | [reservation: string | numb
 }
 
 /**
-* @see \App\Http\Controllers\ReservationController::show
-* @see app/Http/Controllers/ReservationController.php:0
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::show
+* @see app/Http/Controllers/UserReservationController.php:77
+* @route '/reservations/{reservation}'
 */
-show.get = (args: { reservation: string | number } | [reservation: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::show
-* @see app/Http/Controllers/ReservationController.php:0
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::show
+* @see app/Http/Controllers/UserReservationController.php:77
+* @route '/reservations/{reservation}'
 */
-show.head = (args: { reservation: string | number } | [reservation: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::show
-* @see app/Http/Controllers/ReservationController.php:0
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::show
+* @see app/Http/Controllers/UserReservationController.php:77
+* @route '/reservations/{reservation}'
 */
-const showForm = (args: { reservation: string | number } | [reservation: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+const showForm = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::show
-* @see app/Http/Controllers/ReservationController.php:0
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::show
+* @see app/Http/Controllers/UserReservationController.php:77
+* @route '/reservations/{reservation}'
 */
-showForm.get = (args: { reservation: string | number } | [reservation: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.get = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::show
-* @see app/Http/Controllers/ReservationController.php:0
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::show
+* @see app/Http/Controllers/UserReservationController.php:77
+* @route '/reservations/{reservation}'
 */
-showForm.head = (args: { reservation: string | number } | [reservation: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.head = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
@@ -317,9 +323,9 @@ showForm.head = (args: { reservation: string | number } | [reservation: string |
 show.form = showForm
 
 /**
-* @see \App\Http\Controllers\ReservationController::edit
-* @see app/Http/Controllers/ReservationController.php:169
-* @route '/admin/reservations/{reservation}/edit'
+* @see \App\Http\Controllers\UserReservationController::edit
+* @see app/Http/Controllers/UserReservationController.php:90
+* @route '/reservations/{reservation}/edit'
 */
 export const edit = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
@@ -328,13 +334,13 @@ export const edit = (args: { reservation: number | { id: number } } | [reservati
 
 edit.definition = {
     methods: ["get","head"],
-    url: '/admin/reservations/{reservation}/edit',
+    url: '/reservations/{reservation}/edit',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\ReservationController::edit
-* @see app/Http/Controllers/ReservationController.php:169
-* @route '/admin/reservations/{reservation}/edit'
+* @see \App\Http\Controllers\UserReservationController::edit
+* @see app/Http/Controllers/UserReservationController.php:90
+* @route '/reservations/{reservation}/edit'
 */
 edit.url = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -365,9 +371,9 @@ edit.url = (args: { reservation: number | { id: number } } | [reservation: numbe
 }
 
 /**
-* @see \App\Http\Controllers\ReservationController::edit
-* @see app/Http/Controllers/ReservationController.php:169
-* @route '/admin/reservations/{reservation}/edit'
+* @see \App\Http\Controllers\UserReservationController::edit
+* @see app/Http/Controllers/UserReservationController.php:90
+* @route '/reservations/{reservation}/edit'
 */
 edit.get = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
@@ -375,9 +381,9 @@ edit.get = (args: { reservation: number | { id: number } } | [reservation: numbe
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::edit
-* @see app/Http/Controllers/ReservationController.php:169
-* @route '/admin/reservations/{reservation}/edit'
+* @see \App\Http\Controllers\UserReservationController::edit
+* @see app/Http/Controllers/UserReservationController.php:90
+* @route '/reservations/{reservation}/edit'
 */
 edit.head = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: edit.url(args, options),
@@ -385,9 +391,9 @@ edit.head = (args: { reservation: number | { id: number } } | [reservation: numb
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::edit
-* @see app/Http/Controllers/ReservationController.php:169
-* @route '/admin/reservations/{reservation}/edit'
+* @see \App\Http\Controllers\UserReservationController::edit
+* @see app/Http/Controllers/UserReservationController.php:90
+* @route '/reservations/{reservation}/edit'
 */
 const editForm = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: edit.url(args, options),
@@ -395,9 +401,9 @@ const editForm = (args: { reservation: number | { id: number } } | [reservation:
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::edit
-* @see app/Http/Controllers/ReservationController.php:169
-* @route '/admin/reservations/{reservation}/edit'
+* @see \App\Http\Controllers\UserReservationController::edit
+* @see app/Http/Controllers/UserReservationController.php:90
+* @route '/reservations/{reservation}/edit'
 */
 editForm.get = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: edit.url(args, options),
@@ -405,9 +411,9 @@ editForm.get = (args: { reservation: number | { id: number } } | [reservation: n
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::edit
-* @see app/Http/Controllers/ReservationController.php:169
-* @route '/admin/reservations/{reservation}/edit'
+* @see \App\Http\Controllers\UserReservationController::edit
+* @see app/Http/Controllers/UserReservationController.php:90
+* @route '/reservations/{reservation}/edit'
 */
 editForm.head = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: edit.url(args, {
@@ -422,9 +428,9 @@ editForm.head = (args: { reservation: number | { id: number } } | [reservation: 
 edit.form = editForm
 
 /**
-* @see \App\Http\Controllers\ReservationController::update
-* @see app/Http/Controllers/ReservationController.php:184
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::update
+* @see app/Http/Controllers/UserReservationController.php:108
+* @route '/reservations/{reservation}'
 */
 export const update = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -432,14 +438,14 @@ export const update = (args: { reservation: number | { id: number } } | [reserva
 })
 
 update.definition = {
-    methods: ["put","patch"],
-    url: '/admin/reservations/{reservation}',
-} satisfies RouteDefinition<["put","patch"]>
+    methods: ["put"],
+    url: '/reservations/{reservation}',
+} satisfies RouteDefinition<["put"]>
 
 /**
-* @see \App\Http\Controllers\ReservationController::update
-* @see app/Http/Controllers/ReservationController.php:184
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::update
+* @see app/Http/Controllers/UserReservationController.php:108
+* @route '/reservations/{reservation}'
 */
 update.url = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -470,9 +476,9 @@ update.url = (args: { reservation: number | { id: number } } | [reservation: num
 }
 
 /**
-* @see \App\Http\Controllers\ReservationController::update
-* @see app/Http/Controllers/ReservationController.php:184
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::update
+* @see app/Http/Controllers/UserReservationController.php:108
+* @route '/reservations/{reservation}'
 */
 update.put = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -480,19 +486,9 @@ update.put = (args: { reservation: number | { id: number } } | [reservation: num
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::update
-* @see app/Http/Controllers/ReservationController.php:184
-* @route '/admin/reservations/{reservation}'
-*/
-update.patch = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
-    url: update.url(args, options),
-    method: 'patch',
-})
-
-/**
-* @see \App\Http\Controllers\ReservationController::update
-* @see app/Http/Controllers/ReservationController.php:184
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::update
+* @see app/Http/Controllers/UserReservationController.php:108
+* @route '/reservations/{reservation}'
 */
 const updateForm = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
@@ -505,9 +501,9 @@ const updateForm = (args: { reservation: number | { id: number } } | [reservatio
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::update
-* @see app/Http/Controllers/ReservationController.php:184
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::update
+* @see app/Http/Controllers/UserReservationController.php:108
+* @route '/reservations/{reservation}'
 */
 updateForm.put = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
@@ -519,27 +515,12 @@ updateForm.put = (args: { reservation: number | { id: number } } | [reservation:
     method: 'post',
 })
 
-/**
-* @see \App\Http\Controllers\ReservationController::update
-* @see app/Http/Controllers/ReservationController.php:184
-* @route '/admin/reservations/{reservation}'
-*/
-updateForm.patch = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: update.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'PATCH',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
-
 update.form = updateForm
 
 /**
-* @see \App\Http\Controllers\ReservationController::destroy
-* @see app/Http/Controllers/ReservationController.php:211
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::destroy
+* @see app/Http/Controllers/UserReservationController.php:129
+* @route '/reservations/{reservation}'
 */
 export const destroy = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -548,13 +529,13 @@ export const destroy = (args: { reservation: number | { id: number } } | [reserv
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/admin/reservations/{reservation}',
+    url: '/reservations/{reservation}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
-* @see \App\Http\Controllers\ReservationController::destroy
-* @see app/Http/Controllers/ReservationController.php:211
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::destroy
+* @see app/Http/Controllers/UserReservationController.php:129
+* @route '/reservations/{reservation}'
 */
 destroy.url = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -585,9 +566,9 @@ destroy.url = (args: { reservation: number | { id: number } } | [reservation: nu
 }
 
 /**
-* @see \App\Http\Controllers\ReservationController::destroy
-* @see app/Http/Controllers/ReservationController.php:211
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::destroy
+* @see app/Http/Controllers/UserReservationController.php:129
+* @route '/reservations/{reservation}'
 */
 destroy.delete = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -595,9 +576,9 @@ destroy.delete = (args: { reservation: number | { id: number } } | [reservation:
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::destroy
-* @see app/Http/Controllers/ReservationController.php:211
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::destroy
+* @see app/Http/Controllers/UserReservationController.php:129
+* @route '/reservations/{reservation}'
 */
 const destroyForm = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
@@ -610,9 +591,9 @@ const destroyForm = (args: { reservation: number | { id: number } } | [reservati
 })
 
 /**
-* @see \App\Http\Controllers\ReservationController::destroy
-* @see app/Http/Controllers/ReservationController.php:211
-* @route '/admin/reservations/{reservation}'
+* @see \App\Http\Controllers\UserReservationController::destroy
+* @see app/Http/Controllers/UserReservationController.php:129
+* @route '/reservations/{reservation}'
 */
 destroyForm.delete = (args: { reservation: number | { id: number } } | [reservation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
@@ -626,14 +607,6 @@ destroyForm.delete = (args: { reservation: number | { id: number } } | [reservat
 
 destroy.form = destroyForm
 
-const reservations = {
-    index: Object.assign(index, index),
-    create: Object.assign(create, create),
-    store: Object.assign(store, store),
-    show: Object.assign(show, show),
-    edit: Object.assign(edit, edit),
-    update: Object.assign(update, update),
-    destroy: Object.assign(destroy, destroy),
-}
+const UserReservationController = { index, create, store, show, edit, update, destroy }
 
-export default reservations
+export default UserReservationController

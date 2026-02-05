@@ -1,49 +1,39 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
-import { dashboard } from '@/routes';
+import { computed, onMounted } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '../components/PlaceholderPattern.vue';
+import { router } from '@inertiajs/vue3';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Tableau de bord',
-        href: dashboard().url,
-    },
-];
+const page = usePage();
+
+// Check if current user is Super Admin
+const isSuperAdmin = computed(() => {
+    const user = page.props.auth?.user;
+    return user?.roles?.includes('Super Admin') || false;
+});
+
+// Redirect to appropriate dashboard based on role
+const redirectToDashboard = () => {
+    if (isSuperAdmin.value) {
+        router.visit('/admin/dashboard');
+    } else {
+        router.visit('/user/dashboard');
+    }
+};
+
+onMounted(() => {
+    redirectToDashboard();
+});
 </script>
 
 <template>
-    <Head title="Tableau de bord" />
+    <Head :title="isSuperAdmin ? 'Tableau de bord Super Admin' : 'Mon Tableau de bord'" />
 
-    <AppLayout :breadcrumbs="breadcrumbs">
-        <div
-            class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
-        >
-            <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    Date dernière facturation <br> Montant dernière facturation
-                    <PlaceholderPattern />
-                </div>
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-            </div>
-            <div
-                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
-            >
-                Liste heures à encore facturer par praticiens: nom, nombre d'heures louées, montant à payer
-                <PlaceholderPattern />
-            </div>
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p class="text-gray-600">Redirection vers votre tableau de bord...</p>
         </div>
-    </AppLayout>
+    </div>
 </template>

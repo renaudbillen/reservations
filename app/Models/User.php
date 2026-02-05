@@ -4,7 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -51,5 +52,30 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get reservations made by this user.
+     */
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class, 'by_user_id');
+    }
+
+    /**
+     * Get reservations made for this user.
+     */
+    public function reservationsFor(): HasMany
+    {
+        return $this->hasMany(Reservation::class, 'for_user_id');
+    }
+
+    /**
+     * Get all reservations (both made by and for this user).
+     */
+    public function allReservations(): HasMany
+    {
+        return Reservation::where('by_user_id', $this->id)
+            ->orWhere('for_user_id', $this->id);
     }
 }

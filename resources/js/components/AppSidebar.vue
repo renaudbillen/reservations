@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
@@ -11,17 +12,25 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { Calendar, LayoutGrid, Users, Plane } from 'lucide-vue-next';
+import { Link, usePage } from '@inertiajs/vue3';
+import { Calendar, LayoutGrid, Users, Plane, Clock } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { route } from 'ziggy-js';
 
-const mainNavItems: NavItem[] = [
+const page = usePage();
+
+// Check if current user is Super Admin
+const isSuperAdmin = computed(() => {
+    const user = page.props.auth?.user;
+    return user?.roles?.includes('Super Admin') || false;
+});
+
+// Navigation items for Super Admin
+const adminNavItems: NavItem[] = [
     {
         title: 'Tableau de bord',
-        href: dashboard(),
+        href: '/admin/dashboard',
         icon: LayoutGrid,
     },
     {
@@ -44,6 +53,25 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
+// Navigation items for regular users
+const userNavItems: NavItem[] = [
+    {
+        title: 'Mon Tableau de bord',
+        href: '/user/dashboard',
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Mes Réservations',
+        href: '/admin/reservations',
+        icon: Clock,
+    },
+];
+
+// Use appropriate navigation based on user role
+const mainNavItems = computed(() => {
+    return isSuperAdmin.value ? adminNavItems : userNavItems;
+});
+
 const footerNavItems: NavItem[] = [];
 </script>
 
@@ -53,7 +81,7 @@ const footerNavItems: NavItem[] = [];
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
+                        <Link :href="isSuperAdmin ? '/admin/dashboard' : '/user/dashboard'">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>

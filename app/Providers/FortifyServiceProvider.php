@@ -40,6 +40,17 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::createUsersUsing(CreateNewUser::class);
+        
+        // Set custom redirect path after login
+        Fortify::redirects('login', function () {
+            $user = auth()->user();
+            
+            if ($user && $user->roles && $user->roles->contains('name', 'Super Admin')) {
+                return '/admin/dashboard';
+            }
+            
+            return '/user/dashboard';
+        });
     }
 
     /**
