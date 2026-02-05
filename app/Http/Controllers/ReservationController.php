@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
 use App\Mail\ReservationCreated;
+use App\Mail\ReservationDeleted;
+use App\Mail\ReservationDeletedNotification;
 use App\Mail\ReservationNotification;
+use App\Mail\ReservationUpdated;
+use App\Mail\ReservationUpdatedNotification;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
@@ -201,6 +205,18 @@ class ReservationController extends Controller
 
         $reservation->update($validated);
 
+        // Load relationships for emails
+        $reservation->load(['room', 'byUser', 'forUser']);
+
+        // Send update email to the user for whom the reservation was made
+        Mail::to($reservation->forUser->email)->send(new ReservationUpdated($reservation));
+
+        // Send notification email to Super Admins
+        $superAdmins = User::role(RoleEnum::SUPER_ADMIN)->get();
+        foreach ($superAdmins as $admin) {
+            Mail::to($admin->email)->send(new ReservationUpdatedNotification($reservation));
+        }
+
         return redirect()->route('admin.reservations.index')
             ->with('success', 'Reservation updated successfully');
     }
@@ -210,6 +226,18 @@ class ReservationController extends Controller
      */
     public function destroy(Reservation $reservation)
     {
+        // Load relationships for emails
+        $reservation->load(['room', 'byUser', 'forUser']);
+
+        // Send deletion email to the user for whom the reservation was made
+        Mail::to($reservation->forUser->email)->send(new ReservationDeleted($reservation));
+
+        // Send notification email to Super Admins
+        $superAdmins = User::role(RoleEnum::SUPER_ADMIN)->get();
+        foreach ($superAdmins as $admin) {
+            Mail::to($admin->email)->send(new ReservationDeletedNotification($reservation));
+        }
+
         $reservation->delete();
 
         return redirect()->route('admin.reservations.index')
