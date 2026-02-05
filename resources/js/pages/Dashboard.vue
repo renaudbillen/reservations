@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3';
-import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3';
 
@@ -28,7 +27,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head :title="isSuperAdmin ? 'Tableau de bord Super Admin' : 'Mon Tableau de bord'" />
+    <Head :title="'Tableau de bord'" />
 
     <div class="flex items-center justify-center min-h-screen">
         <div class="text-center">

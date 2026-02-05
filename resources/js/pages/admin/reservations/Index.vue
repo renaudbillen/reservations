@@ -71,7 +71,6 @@
                     "
                     rel="noopener"
                     severity="contrast"
-
                 >
                     Nouvelle réservation périodique
                 </Button>
@@ -100,7 +99,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="room in rooms" :key="room.id">
-                            <td class="border p-2 font-medium text-center">
+                            <td class="border p-2 text-center font-medium">
                                 {{ room.name }}
                             </td>
                             <td
@@ -184,6 +183,11 @@ const props = defineProps({
 
 const { can } = usePermissions();
 
+const isSuperAdmin = computed(() => {
+    const user = usePage().props.auth?.user;
+    return user?.roles?.includes('Super Admin') || false;
+});
+
 // Format day number (e.g., "01", "15")
 const formatDay = (dateString: string) => {
     const date = new Date(dateString);
@@ -262,7 +266,8 @@ const getCurrentWeekAndYear = () => {
     const now = new Date();
     const startOfYear = new Date(now.getFullYear(), 0, 1);
     const pastDaysOfYear = (now.getTime() - startOfYear.getTime()) / 86400000;
-    const currentWeek = Math.ceil((pastDaysOfYear + startOfYear.getDay() + 1) / 7) - 1;
+    const currentWeek =
+        Math.ceil((pastDaysOfYear + startOfYear.getDay() + 1) / 7) - 1;
     return { currentWeek, currentYear: now.getFullYear() };
 };
 
@@ -274,6 +279,10 @@ const isPastWeek = (week: number, year: number) => {
 
 // Check if we've reached the 3-week limit
 const isThreeWeeksAhead = (week: number, year: number) => {
+    if (isSuperAdmin.value) {
+        return false;
+    }
+
     const { currentWeek, currentYear } = getCurrentWeekAndYear();
     if (year > currentYear) {
         return week > 2;

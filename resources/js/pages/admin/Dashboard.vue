@@ -227,14 +227,13 @@ import {
     Home,
     Plus,
     UserPlus,
-    SquarePen,
     CalendarX,
     Trash
 } from 'lucide-vue-next';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Tableau de bord Super Admin',
+        title: 'Tableau de bord',
         href: '/admin/dashboard',
     },
 ];
