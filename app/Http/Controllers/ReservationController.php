@@ -13,6 +13,7 @@ use App\Mail\ReservationUpdatedNotification;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
+use App\Models\Vacation;
 use App\Repository\ReservationRepository;
 use App\Enums\RoleEnum;
 use Carbon\Carbon;
@@ -80,6 +81,11 @@ class ReservationController extends Controller
                 return $reservation->reservation_date->format('Y-m-d');
             }]);
 
+        // Get vacations for the week
+        $vacations = Vacation::whereDate('start_date', '<=', $endOfWeek)
+            ->whereDate('end_date', '>=', $startOfWeek)
+            ->get();
+
         // Prepare time slots (AM/PM for each day)
         $days = collect();
         $currentDay = (clone $startOfWeek);
@@ -94,6 +100,7 @@ class ReservationController extends Controller
             'days' => $days,
             'rooms' => $rooms,
             'reservations' => $reservations,
+            'vacations' => $vacations,
         ]);
     }
 

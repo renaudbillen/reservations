@@ -179,6 +179,7 @@ const props = defineProps({
     days: Array,
     rooms: Array,
     reservations: Object,
+    vacations: Array,
 });
 
 const { can } = usePermissions();
@@ -207,6 +208,11 @@ const getTimeSlotClass = (
     period: 'AM' | 'PM',
 ) => {
     const reservation = getReservation(roomId, date, period);
+    const vacation = getVacation(date);
+    
+    if (vacation) {
+        return 'bg-gray-300 hover:bg-gray-400 cursor-not-allowed';
+    }
     if (reservation) {
         return 'bg-red-100 hover:bg-red-200 cursor-pointer';
     }
@@ -223,6 +229,16 @@ const getReservation = (roomId: number, date: string, period: 'AM' | 'PM') => {
     });
 };
 
+// Get vacation for a date
+const getVacation = (date: string) => {
+    return props.vacations?.find((vacation) => {
+        const vacationStart = new Date(vacation.start_date);
+        const vacationEnd = new Date(vacation.end_date);
+        const currentDate = new Date(date);
+        return currentDate >= vacationStart && currentDate <= vacationEnd;
+    });
+};
+
 // Get display text for a time slot
 const getReservationInfo = (
     roomId: number,
@@ -230,6 +246,12 @@ const getReservationInfo = (
     period: 'AM' | 'PM',
 ) => {
     const reservation = getReservation(roomId, date, period);
+    const vacation = getVacation(date);
+    
+    if (vacation) {
+        return vacation.name;
+    }
+    
     if (reservation) {
         const page = usePage();
         const currentUserId = page.props.auth?.user?.id;
@@ -253,12 +275,33 @@ const handleTimeSlotClick = (
     date: string,
     period: 'AM' | 'PM',
 ) => {
-    // Navigate to create page with pre-filled values
-    router.get(route('admin.reservations.create'), {
-        room_id: roomId,
-        date: date,
-        period: period,
-    });
+    const reservation = getReservation(roomId, date, period);
+    const vacation = getVacation(date);
+    
+    if (vacation) {
+        // Time slot is blocked by vacation - do nothing
+        return;
+    }
+    
+    if (reservation) {
+        // Time slot is reserved
+        const isAdmin = can('reservation_view_all');
+        
+        if (isAdmin) {
+            // Admin can edit the reservation
+            router.get(route('admin.reservations.edit', reservation.id));
+        } else {
+            // Regular user - do nothing
+            return;
+        }
+    } else {
+        // Time slot is available - navigate to create page with pre-filled values
+        router.get(route('admin.reservations.create'), {
+            room_id: roomId,
+            date: date,
+            period: period,
+        });
+    }
 };
 
 // Helper function to get the current week number and year

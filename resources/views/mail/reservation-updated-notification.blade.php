@@ -5,7 +5,7 @@ Cher(e) administrateur,
 
 Une réservation a été modifiée dans le système. Voici les nouveaux détails :
 
-<Nouveaux détails de la réservation :</strong>
+<strong>Nouveaux détails de la réservation :</strong>
 - <strong>Cabinet :</strong> {{ $reservation->room->name }}
 - <strong>Date :</strong> {{ \Carbon\Carbon::parse($reservation->reservation_date)->locale('fr')->isoFormat('dddd D MMMM YYYY') }}
 - <strong>Période :</strong> {{ $reservation->reservation_period === 'AM' ? 'Matin' : 'Après-midi' }}

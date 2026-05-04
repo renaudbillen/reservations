@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\Reservation;
+use App\Models\Vacation;
 use Illuminate\Support\Facades\DB;
 
 class ReservationRepository
@@ -19,10 +20,18 @@ class ReservationRepository
         string $reservation_period
     ): bool
     {
-        return !DB::table('reservations')
+        // Check for existing reservations
+        $hasReservation = DB::table('reservations')
             ->where('room_id', $room_id)
             ->where('reservation_date', $reservation_date)
             ->where('reservation_period', $reservation_period)
             ->exists();
+
+        // Check for vacations that block this date
+        $hasVacation = Vacation::whereDate('start_date', '<=', $reservation_date)
+            ->whereDate('end_date', '>=', $reservation_date)
+            ->exists();
+
+        return !$hasReservation && !$hasVacation;
     }
 }

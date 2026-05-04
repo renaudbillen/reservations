@@ -65,6 +65,65 @@
                     </Button>
                 </div>
 
+                <!-- Filters -->
+                <div class="mb-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="flex flex-col">
+                        <label class="text-sm font-medium text-gray-700 mb-1">Période de réservation</label>
+                        <div class="space-y-2">
+                            <input
+                                type="date"
+                                v-model="filters.start_date"
+                                @change="fetchDashboardData"
+                                placeholder="Date de début"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            <input
+                                type="date"
+                                v-model="filters.end_date"
+                                @change="fetchDashboardData"
+                                placeholder="Date de fin"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-sm font-medium text-gray-700 mb-1">Réservé par</label>
+                        <select
+                            v-model="filters.by_user_id"
+                            @change="fetchDashboardData"
+                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="">Tous</option>
+                            <option v-for="user in users" :key="user.id" :value="user.id">
+                                {{ user.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-sm font-medium text-gray-700 mb-1">Pour</label>
+                        <select
+                            v-model="filters.for_user_id"
+                            @change="fetchDashboardData"
+                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="">Tous</option>
+                            <option v-for="user in users" :key="user.id" :value="user.id">
+                                {{ user.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col justify-end">
+                        <Button
+                            @click="clearFilters"
+                            variant="outline"
+                            size="sm"
+                            class="w-full"
+                        >
+                            Effacer les filtres
+                        </Button>
+                    </div>
+                </div>
+
                 <DataTable
                     :value="futureReservations"
                     :paginator="true"
@@ -246,9 +305,17 @@ const stats = ref({
 });
 
 const futureReservations = ref([]);
+const users = ref([]);
 const deleteDialogVisible = ref(false);
 const reservationToDelete = ref(null);
 const deleteLoading = ref(false);
+
+const filters = ref({
+    start_date: '',
+    end_date: '',
+    by_user_id: '',
+    for_user_id: '',
+});
 
 const formatDate = (date: string) => {
     return format(new Date(date), 'dd MMMM yyyy', { locale: fr });
@@ -281,12 +348,28 @@ const deleteReservation = async () => {
 
 const fetchDashboardData = async () => {
     try {
+        // Build query string from filters
+        const queryParams = new URLSearchParams();
+        if (filters.value.start_date) {
+            queryParams.append('start_date', filters.value.start_date);
+        }
+        if (filters.value.end_date) {
+            queryParams.append('end_date', filters.value.end_date);
+        }
+        if (filters.value.by_user_id) {
+            queryParams.append('by_user_id', filters.value.by_user_id);
+        }
+        if (filters.value.for_user_id) {
+            queryParams.append('for_user_id', filters.value.for_user_id);
+        }
+        
         // Fetch real data from API
-        const response = await fetch('/admin/dashboard-data');
+        const response = await fetch(`/admin/dashboard-data?${queryParams.toString()}`);
         const data = await response.json();
 
         stats.value = data.stats;
         futureReservations.value = data.futureReservations;
+        users.value = data.users || [];
     } catch (error) {
         console.error('Error fetching dashboard data:', error);
 
@@ -298,6 +381,16 @@ const fetchDashboardData = async () => {
             availableRooms: 8,
         };
     }
+};
+
+const clearFilters = () => {
+    filters.value = {
+        start_date: '',
+        end_date: '',
+        by_user_id: '',
+        for_user_id: '',
+    };
+    fetchDashboardData();
 };
 
 onMounted(() => {

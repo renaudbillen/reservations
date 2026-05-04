@@ -45,7 +45,40 @@
                             </p>
                         </div>
 
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                            <div>
+                                <label
+                                    for="for_user_id"
+                                    class="block text-sm font-medium text-gray-700"
+                                    >Utilisateur</label
+                                >
+                                <select
+                                    id="for_user_id"
+                                    v-model="form.for_user_id"
+                                    class="mt-1 block w-full rounded-md border-gray-300 py-2 pr-10 pl-3 text-base focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
+                                    :class="{
+                                        'border-red-300 text-red-900':
+                                            form.errors.for_user_id,
+                                    }"
+                                >
+                                    <option value="">Sélectionnez un utilisateur</option>
+                                    <option
+                                        v-for="user in users"
+                                        :key="user.id"
+                                        :value="user.id"
+                                        :selected="user.id === form.for_user_id"
+                                    >
+                                        {{ user.name }}
+                                    </option>
+                                </select>
+                                <p
+                                    v-if="form.errors.for_user_id"
+                                    class="mt-2 text-sm text-red-600"
+                                >
+                                    {{ form.errors.for_user_id }}
+                                </p>
+                            </div>
+
                             <div>
                                 <label
                                     for="reservation_date"
@@ -149,7 +182,16 @@ import { addWeeks, startOfWeek, format } from 'date-fns';
 
 const props = defineProps({
     reservation: {
+        type: Object,
+        required: true,
+    },
+    rooms: {
         type: Array,
+        required: true,
+    },
+    users: {
+        type: Array,
+        required: true,
     },
 });
 
@@ -175,15 +217,20 @@ const maxDate = computed(() => {
     return format(maxDateSaturday, 'yyyy-MM-dd');
 });
 
+// Format the date for HTML date input (YYYY-MM-DD)
+const formattedDate = props.reservation.reservation_date
+    ? new Date(props.reservation.reservation_date).toISOString().split('T')[0]
+    : '';
+
 const form = useForm({
     room_id: props.reservation.room_id,
-    reservation_date: props.reservation.reservation_date,
+    reservation_date: formattedDate,
     reservation_period: props.reservation.reservation_period,
     for_user_id: props.reservation.for_user_id,
 });
 
 const submit = () => {
-    form.post(route('admin.reservations.update', props.reservation.id));
+    form.put(route('admin.reservations.update', props.reservation.id));
 };
 
 const confirmDelete = () => {
