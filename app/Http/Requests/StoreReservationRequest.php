@@ -25,10 +25,28 @@ class StoreReservationRequest extends FormRequest
     {
         return [
             'reservation_date' => ['required', 'date', 'after_or_equal:today'],
-            'reservation_period' => ['required', 'string', Rule::in(Reservation::PERIODS)],
+            'start_time' => ['required', 'string', Rule::in(Reservation::TIME_SLOTS)],
+            'end_time' => ['required', 'string', Rule::in(Reservation::TIME_SLOTS)],
             'room_id' => ['required', 'exists:rooms,id'],
             'for_user_id' => ['nullable', 'exists:users,id'],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->start_time && $this->end_time) {
+                $startIndex = array_search($this->start_time, Reservation::TIME_SLOTS);
+                $endIndex = array_search($this->end_time, Reservation::TIME_SLOTS);
+
+                if ($startIndex !== false && $endIndex !== false && $endIndex <= $startIndex) {
+                    $validator->errors()->add('end_time', 'The end time must be after the start time.');
+                }
+            }
+        });
     }
 
     /**
@@ -50,9 +68,8 @@ class StoreReservationRequest extends FormRequest
     {
         return [
             'reservation_date.after_or_equal' => 'The reservation date must be today or in the future.',
-            'reservation_period.in' => 'The selected period is invalid. Must be AM or PM.',
-            'start_time.after_or_equal' => 'The start time must be a date after or equal to now.',
-            'end_time.after' => 'The end time must be a date after start time.',
+            'start_time.in' => 'The selected start time slot is invalid.',
+            'end_time.in' => 'The selected end time slot is invalid.',
         ];
     }
 }

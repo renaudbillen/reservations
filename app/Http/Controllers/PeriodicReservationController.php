@@ -23,7 +23,8 @@ class PeriodicReservationController extends Controller
 
         return Inertia::render('admin/reservations/CreatePeriodic', [
             'rooms' => $rooms,
-            'users' => $users
+            'users' => $users,
+            'timeSlots' => Reservation::TIME_SLOTS
         ]);
     }
 
@@ -44,61 +45,51 @@ class PeriodicReservationController extends Controller
         // Adjust start date to the next occurrence of the selected day of week
         $startDate->next($dayOfWeek);
         if ($startDate->lt(Carbon::parse($validated['start_date']))) {
-            $startDate->addWeek(); // Ensure we don't go before the selected start date
+            $startDate->addWeek();
         }
 
         // Get all dates that match the selected day of week within the date range
         $period = CarbonPeriod::create($startDate, '1 week', $endDate);
 
-        // Check for existing reservations in a single query
-        $existingReservations = [];
-        $datesToCheck = [];
+        // Get the time slots between start_time and end_time
+        $startIndex = array_search($validated['start_time'], Reservation::TIME_SLOTS);
+        $endIndex = array_search($validated['end_time'], Reservation::TIME_SLOTS);
 
-        foreach ($period as $date) {
-            $date->setTimeFromTimeString($validated['period'] === 'AM' ? '09:00:00' : '13:00:00');
-            $datesToCheck[] = [
-                'reservation_date' => $date->toDateString(),
-                'reservation_period' => $validated['period'],
-                'room_id' => $validated['room_id']
-            ];
+        if ($startIndex === false || $endIndex === false) {
+            return redirect()
+                ->back()
+                ->with('error', 'Invalid time slots selected.');
         }
 
-        if (!empty($datesToCheck)) {
-            $existingReservations = DB::table('reservations')
-                ->whereIn('reservation_date', array_column($datesToCheck, 'reservation_date'))
-                ->where('reservation_period', $validated['period'])
-                ->where('room_id', $validated['room_id'])
-                ->pluck('reservation_date')
-                ->toArray();
-        }
+        $timeSlots = array_slice(Reservation::TIME_SLOTS, $startIndex, $endIndex - $startIndex);
 
-        // Create reservations that don't already exist
-        $createdReservations = [];
-
+        // For each date in the period, create reservations for all time slots
         foreach ($period as $date) {
-            // Skip if this date already has a reservation
-            if (in_array($date->toDateString(), $existingReservations)) {
-                continue;
+            foreach ($timeSlots as $timeSlot) {
+                // Check if this time slot is already reserved
+                $exists = DB::table('reservations')
+                    ->where('reservation_date', $date->toDateString())
+                    ->where('reservation_time', $timeSlot)
+                    ->where('room_id', $validated['room_id'])
+                    ->exists();
+
+                if (!$exists) {
+                    Reservation::create([
+                        'room_id' => $validated['room_id'],
+                        'reservation_date' => $date->toDateString(),
+                        'reservation_time' => $timeSlot,
+                        'for_user_id' => $validated['user_id'] ?? auth()->id(),
+                        'by_user_id' => auth()->id(),
+                    ]);
+
+                    $createdCount++;
+                }
             }
-
-            $reservation = Reservation::create([
-                'room_id' => $validated['room_id'],
-                'reservation_date' => $date->toDateString(),
-                'reservation_period' => $validated['period'],
-                'for_user_id' => $validated['user_id'] ?? auth()->id(),
-                'by_user_id' => auth()->id(),
-            ]);
-
-            $createdCount++;
         }
 
         $message = $createdCount > 0
-            ? "Successfully created {$createdCount} reservations."
+            ? "Successfully created {$createdCount} reservation slots."
             : "No new reservations were created. All requested time slots are already booked.";
-
-        if ($createdCount < count($period)) {
-            $message .= ' Some time slots were already booked.';
-        }
 
         return redirect()
             ->route('admin.reservations.index')

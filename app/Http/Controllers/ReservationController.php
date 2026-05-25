@@ -70,23 +70,28 @@ class ReservationController extends Controller
         $startOfWeek = Carbon::now()->setISODate($requestedYear, $requestedWeek)->startOfWeek();
         $endOfWeek = (clone $startOfWeek)->endOfWeek(-1);
 
-        // Get all rooms
+        // Get all rooms for the selector
         $rooms = Room::all();
 
         // Get reservations for the week
         $reservations = Reservation::with(['byUser', 'forUser', 'room'])
             ->whereBetween('reservation_date', [$startOfWeek, $endOfWeek])
             ->get()
-            ->groupBy(['room_id', function ($reservation) {
-                return $reservation->reservation_date->format('Y-m-d');
-            }]);
+            ->map(function ($reservation) {
+                // Convert date to string format to avoid ISO format issues in frontend
+                $reservation->reservation_date = $reservation->reservation_date->format('Y-m-d');
+                return $reservation;
+            });
 
         // Get vacations for the week
         $vacations = Vacation::whereDate('start_date', '<=', $endOfWeek)
             ->whereDate('end_date', '>=', $startOfWeek)
             ->get();
 
-        // Prepare time slots (AM/PM for each day)
+        // Prepare time slots (half-hour intervals from 8:00 to 20:00)
+        $timeSlots = Reservation::TIME_SLOTS;
+
+        // Prepare days of the week
         $days = collect();
         $currentDay = (clone $startOfWeek);
         while ($currentDay <= $endOfWeek) {
@@ -101,6 +106,7 @@ class ReservationController extends Controller
             'rooms' => $rooms,
             'reservations' => $reservations,
             'vacations' => $vacations,
+            'timeSlots' => $timeSlots,
         ]);
     }
 
@@ -114,10 +120,11 @@ class ReservationController extends Controller
 
         return Inertia::render('admin/reservations/Create', [
             'rooms' => $rooms,
-            'users' => $users
+            'users' => $users,
+            'timeSlots' => Reservation::TIME_SLOTS
         ]);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -125,14 +132,13 @@ class ReservationController extends Controller
     {
         $validated = $request->validated();
         $validated['by_user_id'] = auth()->id();
-        // If for_user_id is not provided, default to the authenticated user
         $validated['for_user_id'] = $validated['for_user_id'] ?? auth()->id();
 
         // Check if non-Super Admin is trying to reserve beyond 3 weeks
         if (!auth()->user()->hasRole(RoleEnum::SUPER_ADMIN)) {
             $reservationDate = Carbon::parse($validated['reservation_date']);
             $currentWeekEnd = Carbon::now()->endOfWeek();
-            $maxAllowedDate = $currentWeekEnd->copy()->addWeeks(3)->subDay(); // Saturday of 3rd week
+            $maxAllowedDate = $currentWeekEnd->copy()->addWeeks(3)->subDay();
 
             if ($reservationDate->gt($maxAllowedDate)) {
                 return redirect()
@@ -141,37 +147,65 @@ class ReservationController extends Controller
             }
         }
 
-        // Check if room is available
-        if (!ReservationRepository::checkIsAvailable(
-            $validated['room_id'],
-            $validated['reservation_date'],
-            $validated['reservation_period']
-        )) {
+        // Get the time slots between start_time and end_time
+        $startIndex = array_search($validated['start_time'], Reservation::TIME_SLOTS);
+        $endIndex = array_search($validated['end_time'], Reservation::TIME_SLOTS);
+
+        if ($startIndex === false || $endIndex === false) {
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Reservation not possible, the room is not available.');
+                ->with('error', 'Invalid time slots selected.');
         }
 
-        $reservation = Reservation::create($validated);
+        $timeSlots = array_slice(Reservation::TIME_SLOTS, $startIndex, $endIndex - $startIndex);
 
-        // Load relationships for emails
-        $reservation->load(['room', 'byUser', 'forUser']);
+        // Check if all time slots are available
+        foreach ($timeSlots as $timeSlot) {
+            if (!ReservationRepository::checkIsAvailable(
+                $validated['room_id'],
+                $validated['reservation_date'],
+                $timeSlot
+            )) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', "Reservation not possible, the room is not available at {$timeSlot}.");
+            }
+        }
 
-        // Send confirmation email to the user who made the reservation
-        Mail::to($reservation->forUser->email)->send(new ReservationCreated($reservation));
+        // Create a reservation for each 30-minute slot
+        $createdReservations = [];
+        foreach ($timeSlots as $timeSlot) {
+            $reservation = Reservation::create([
+                'room_id' => $validated['room_id'],
+                'reservation_date' => $validated['reservation_date'],
+                'reservation_time' => $timeSlot,
+                'by_user_id' => $validated['by_user_id'],
+                'for_user_id' => $validated['for_user_id'],
+            ]);
+            $createdReservations[] = $reservation;
+        }
+
+        // Load relationships for the first reservation (for email)
+        $firstReservation = $createdReservations[0];
+        $firstReservation->load(['room', 'byUser', 'forUser']);
+
+        // Send confirmation email
+        Mail::to($firstReservation->forUser->email)->send(new ReservationCreated($firstReservation));
 
         // Send notification email to Super Admins if the user is not a Super Admin
         if (!auth()->user()->hasRole(RoleEnum::SUPER_ADMIN)) {
             $superAdmins = User::role(RoleEnum::SUPER_ADMIN)->get();
             foreach ($superAdmins as $admin) {
-                Mail::to($admin->email)->send(new ReservationNotification($reservation));
+                Mail::to($admin->email)->send(new ReservationNotification($firstReservation));
             }
         }
 
+        $slotsCount = count($timeSlots);
         return redirect()
             ->route('admin.reservations.index')
-            ->with('success', 'Reservation created successfully.');
+            ->with('success', "Reservation created successfully ({$slotsCount} time slots reserved).");
     }
 
     /**

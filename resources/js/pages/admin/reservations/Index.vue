@@ -1,9 +1,40 @@
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="overflow-hidden bg-white p-6 shadow-xl sm:rounded-lg">
-            <!-- Week Navigation -->
-            <div class="mb-6 flex justify-center">
-                <div class="flex items-center space-x-4">
+            <!-- 2x2 Grid Layout for Header -->
+            <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <!-- Top Left: Room Selection and Price -->
+                <div class="flex flex-col space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2">
+                            <label class="text-sm font-medium text-gray-700"
+                                >Salle:</label
+                            >
+                            <select
+                                v-model="selectedRoomId"
+                                @change="updateSelectedRoom"
+                                class="rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            >
+                                <option
+                                    v-for="room in rooms"
+                                    :key="room.id"
+                                    :value="room.id"
+                                >
+                                    {{ room.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div v-if="selectedRoom" class="text-sm">
+                            <p class="font-medium text-gray-900">
+                                {{ selectedRoom.hour_price }}€ / heure
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Right: Week Navigation -->
+                <div class="flex items-center justify-end space-x-4">
                     <button
                         @click="loadPreviousWeek"
                         class="rounded-full p-2 hover:bg-gray-100"
@@ -52,28 +83,40 @@
                         </svg>
                     </button>
                 </div>
-            </div>
 
-            <!-- Action Buttons -->
-            <div class="mb-6 flex justify-end space-x-4">
-                <Button
-                    v-if="can('reservation_create')"
-                    @click="router.visit(route('admin.reservations.create'))"
-                    rel="noopener"
-                    severity="contrast"
-                >
-                    Nouvelle réservation
-                </Button>
-                <Button
-                    v-if="can('reservation_periodic_create')"
-                    @click="
-                        router.visit(route('admin.periodicReservations.create'))
-                    "
-                    rel="noopener"
-                    severity="contrast"
-                >
-                    Nouvelle réservation périodique
-                </Button>
+                <!-- Bottom Left: Room Image -->
+                <div v-if="selectedRoom && selectedRoom.image">
+                    <img
+                        :src="`${selectedRoom.image}`"
+                        :alt="selectedRoom.name"
+                        class="h-60 w-full rounded-lg object-cover"
+                    />
+                </div>
+                <div v-else></div>
+
+                <!-- Bottom Right: Action Buttons -->
+                <div class="flex flex-col space-y-4 items-end">
+                    <Button
+                        v-if="can('reservation_create')"
+                        @click="router.visit(route('admin.reservations.create'))"
+                        rel="noopener"
+                        severity="contrast"
+                        class="w-full md:w-auto"
+                    >
+                        Nouvelle réservation
+                    </Button>
+                    <Button
+                        v-if="can('reservation_periodic_create')"
+                        @click="
+                            router.visit(route('admin.periodicReservations.create'))
+                        "
+                        rel="noopener"
+                        severity="contrast"
+                        class="w-full md:w-auto"
+                    >
+                        Nouvelle réservation périodique
+                    </Button>
+                </div>
             </div>
 
             <!-- Schedule Table -->
@@ -81,7 +124,9 @@
                 <table class="min-w-full border-collapse">
                     <thead>
                         <tr>
-                            <th class="border p-2"></th>
+                            <th class="border p-2 text-left font-medium">
+                                Heure
+                            </th>
                             <th
                                 v-for="day in days"
                                 :key="day"
@@ -98,60 +143,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="room in rooms" :key="room.id">
+                        <tr v-for="timeSlot in timeSlots" :key="timeSlot">
                             <td class="border p-2 text-center font-medium">
-                                {{ room.name }}
+                                {{ formatTime(timeSlot) }}
                             </td>
                             <td
                                 v-for="day in days"
-                                :key="`${room.id}-${day}`"
+                                :key="`${day}-${timeSlot}`"
                                 class="border p-1"
                             >
-                                <div class="flex flex-col gap-1 text-center">
-                                    <!-- AM Slot -->
-                                    <div
-                                        class="h-16 p-2 text-xs"
-                                        :class="
-                                            getTimeSlotClass(room.id, day, 'AM')
-                                        "
-                                        @click="
-                                            handleTimeSlotClick(
-                                                room.id,
-                                                day,
-                                                'AM',
-                                            )
-                                        "
-                                    >
-                                        {{
-                                            getReservationInfo(
-                                                room.id,
-                                                day,
-                                                'AM',
-                                            )
-                                        }}
-                                    </div>
-                                    <!-- PM Slot -->
-                                    <div
-                                        class="h-16 p-2 text-xs"
-                                        :class="
-                                            getTimeSlotClass(room.id, day, 'PM')
-                                        "
-                                        @click="
-                                            handleTimeSlotClick(
-                                                room.id,
-                                                day,
-                                                'PM',
-                                            )
-                                        "
-                                    >
-                                        {{
-                                            getReservationInfo(
-                                                room.id,
-                                                day,
-                                                'PM',
-                                            )
-                                        }}
-                                    </div>
+                                <div
+                                    class="flex h-12 items-center justify-center p-2 text-xs"
+                                    :class="getTimeSlotClass(day, timeSlot)"
+                                    @click="handleTimeSlotClick(day, timeSlot)"
+                                >
+                                    <span class="text-center">
+                                        {{ getReservationInfo(day, timeSlot) }}
+                                    </span>
                                 </div>
                             </td>
                         </tr>
@@ -167,7 +175,7 @@ import { router, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItemType } from '@/types';
 import { route } from 'ziggy-js';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { addWeeks, startOfWeek, endOfWeek, format, parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Button } from 'primevue';
@@ -178,15 +186,40 @@ const props = defineProps({
     year: Number,
     days: Array,
     rooms: Array,
-    reservations: Object,
+    reservations: Array,
     vacations: Array,
+    timeSlots: Array,
 });
 
 const { can } = usePermissions();
 
+// Initialize selected room from localStorage or default to 1
+const storedRoomId =
+    typeof window !== 'undefined'
+        ? localStorage.getItem('selectedRoomId')
+        : null;
+const selectedRoomId = ref(storedRoomId || 1);
+
+const selectedRoom = computed(() => {
+    return props.rooms?.find((room) => room.id == selectedRoomId.value);
+});
+
+const updateSelectedRoom = () => {
+    // Save selected room to localStorage
+    localStorage.setItem('selectedRoomId', selectedRoomId.value);
+};
+
 const isSuperAdmin = computed(() => {
     const user = usePage().props.auth?.user;
     return user?.roles?.includes('Super Admin') || false;
+});
+
+// Debug: Check if props are being received correctly
+console.log('Component props:', {
+    reservations: props.reservations?.length || 0,
+    rooms: props.rooms?.length || 0,
+    timeSlots: props.timeSlots?.length || 0,
+    selectedRoomId: selectedRoomId.value,
 });
 
 // Format day number (e.g., "01", "15")
@@ -201,15 +234,16 @@ const isToday = (dateString: string) => {
     return new Date(dateString).toDateString() === today;
 };
 
+// Format time slot display
+const formatTime = (timeSlot: string) => {
+    return timeSlot;
+};
+
 // Get CSS class for time slot
-const getTimeSlotClass = (
-    roomId: number,
-    date: string,
-    period: 'AM' | 'PM',
-) => {
-    const reservation = getReservation(roomId, date, period);
+const getTimeSlotClass = (date: string, timeSlot: string) => {
+    const reservation = getReservation(date, timeSlot);
     const vacation = getVacation(date);
-    
+
     if (vacation) {
         return 'bg-gray-300 hover:bg-gray-400 cursor-not-allowed';
     }
@@ -219,13 +253,16 @@ const getTimeSlotClass = (
     return 'bg-green-50 hover:bg-green-100 cursor-pointer';
 };
 
-// Get reservation info for a time slot
-const getReservation = (roomId: number, date: string, period: 'AM' | 'PM') => {
-    const dayReservations = props.reservations?.[roomId]?.[date];
-    if (!dayReservations) return null;
+// Get reservation for a date and time slot
+const getReservation = (date: string, timeSlot: string) => {
+    return props.reservations?.find((reservation) => {
+        const reservationDate = new Date(reservation.reservation_date);
 
-    return dayReservations.find((reservation) => {
-        return reservation.reservation_period === period;
+        return (
+            reservationDate.toISOString().split('T')[0] === date &&
+            reservation.reservation_time === timeSlot + ':00' &&
+            reservation.room_id == selectedRoomId.value
+        );
     });
 };
 
@@ -240,18 +277,14 @@ const getVacation = (date: string) => {
 };
 
 // Get display text for a time slot
-const getReservationInfo = (
-    roomId: number,
-    date: string,
-    period: 'AM' | 'PM',
-) => {
-    const reservation = getReservation(roomId, date, period);
+const getReservationInfo = (date: string, timeSlot: string) => {
+    const reservation = getReservation(date, timeSlot);
     const vacation = getVacation(date);
-    
+
     if (vacation) {
         return vacation.name;
     }
-    
+
     if (reservation) {
         const page = usePage();
         const currentUserId = page.props.auth?.user?.id;
@@ -263,30 +296,26 @@ const getReservationInfo = (
             return reservation.for_user?.name || 'Réservé';
         }
 
-        // Otherwise show generic "Reservé" + period
-        return 'Réservé ' + period;
+        // Otherwise show generic "Reservé"
+        return 'Réservé';
     }
-    return 'Disponible ' + period;
+    return 'Disponible';
 };
 
 // Handle time slot click
-const handleTimeSlotClick = (
-    roomId: number,
-    date: string,
-    period: 'AM' | 'PM',
-) => {
-    const reservation = getReservation(roomId, date, period);
+const handleTimeSlotClick = (date: string, timeSlot: string) => {
+    const reservation = getReservation(date, timeSlot);
     const vacation = getVacation(date);
-    
+
     if (vacation) {
         // Time slot is blocked by vacation - do nothing
         return;
     }
-    
+
     if (reservation) {
         // Time slot is reserved
         const isAdmin = can('reservation_view_all');
-        
+
         if (isAdmin) {
             // Admin can edit the reservation
             router.get(route('admin.reservations.edit', reservation.id));
@@ -297,9 +326,9 @@ const handleTimeSlotClick = (
     } else {
         // Time slot is available - navigate to create page with pre-filled values
         router.get(route('admin.reservations.create'), {
-            room_id: roomId,
-            date: date,
-            period: period,
+            reservation_date: date,
+            reservation_time: timeSlot,
+            room_id: selectedRoomId.value,
         });
     }
 };

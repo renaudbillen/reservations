@@ -163,7 +163,7 @@ create.form = createForm
 
 /**
 * @see \App\Http\Controllers\PeriodicReservationController::store
-* @see app/Http/Controllers/PeriodicReservationController.php:33
+* @see app/Http/Controllers/PeriodicReservationController.php:34
 * @route '/admin/periodicReservations'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -178,7 +178,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\PeriodicReservationController::store
-* @see app/Http/Controllers/PeriodicReservationController.php:33
+* @see app/Http/Controllers/PeriodicReservationController.php:34
 * @route '/admin/periodicReservations'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -187,7 +187,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PeriodicReservationController::store
-* @see app/Http/Controllers/PeriodicReservationController.php:33
+* @see app/Http/Controllers/PeriodicReservationController.php:34
 * @route '/admin/periodicReservations'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -197,7 +197,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\PeriodicReservationController::store
-* @see app/Http/Controllers/PeriodicReservationController.php:33
+* @see app/Http/Controllers/PeriodicReservationController.php:34
 * @route '/admin/periodicReservations'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -207,7 +207,7 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 
 /**
 * @see \App\Http\Controllers\PeriodicReservationController::store
-* @see app/Http/Controllers/PeriodicReservationController.php:33
+* @see app/Http/Controllers/PeriodicReservationController.php:34
 * @route '/admin/periodicReservations'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

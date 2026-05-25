@@ -1,5 +1,8 @@
 <template>
-    <AppLayout title="Créer une réservation périodique" :breadcrumbs="breadcrumbs">
+    <AppLayout
+        title="Créer une réservation périodique"
+        :breadcrumbs="breadcrumbs"
+    >
         <template #header>
             <h2 class="text-xl leading-tight font-semibold text-gray-800">
                 Créer une réservation périodique
@@ -13,41 +16,43 @@
                 >
                     <form @submit.prevent="submit" class="space-y-6">
                         <!-- Room Selection -->
-                        <div>
-                            <label
-                                for="room_id"
-                                class="block text-sm font-medium text-gray-700"
-                            >
-                                Room
-                            </label>
-                            <select
-                                id="room_id"
-                                v-model="form.room_id"
-                                class="mt-1 block w-full rounded-md border-gray-300 py-2 pr-10 pl-3 text-base focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
-                                :class="{
-                                    'border-red-500': form.errors.room_id,
-                                }"
-                                required
-                            >
-                                <option value="">Sélectionnez une salle</option>
-                                <option
-                                    v-for="room in rooms"
-                                    :key="room.id"
-                                    :value="room.id"
-                                >
-                                    {{ room.name }}
-                                </option>
-                            </select>
-                            <p
-                                v-if="form.errors.room_id"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ form.errors.room_id }}
-                            </p>
-                        </div>
-
-                        <!-- Day of Week and Period -->
                         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div>
+                                <label
+                                    for="room_id"
+                                    class="block text-sm font-medium text-gray-700"
+                                >
+                                    Room
+                                </label>
+                                <select
+                                    id="room_id"
+                                    v-model="form.room_id"
+                                    class="mt-1 block w-full rounded-md border-gray-300 py-2 pr-10 pl-3 text-base focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
+                                    :class="{
+                                        'border-red-500': form.errors.room_id,
+                                    }"
+                                    required
+                                >
+                                    <option value="">
+                                        Sélectionnez une salle
+                                    </option>
+                                    <option
+                                        v-for="room in rooms"
+                                        :key="room.id"
+                                        :value="room.id"
+                                    >
+                                        {{ room.name }}
+                                    </option>
+                                </select>
+                                <p
+                                    v-if="form.errors.room_id"
+                                    class="mt-1 text-sm text-red-600"
+                                >
+                                    {{ form.errors.room_id }}
+                                </p>
+                            </div>
+
+                            <!-- Day of Week -->
                             <div>
                                 <label
                                     for="day_of_week"
@@ -65,7 +70,9 @@
                                     }"
                                     required
                                 >
-                                    <option value="">Sélectionnez un jour</option>
+                                    <option value="">
+                                        Sélectionnez un jour
+                                    </option>
                                     <option
                                         v-for="(day, index) in daysOfWeek"
                                         :key="index"
@@ -81,32 +88,79 @@
                                     {{ form.errors.day_of_week }}
                                 </p>
                             </div>
+                        </div>
 
+                        <!-- Start and End Time -->
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div>
                                 <label
-                                    for="period"
+                                    for="start_time"
                                     class="block text-sm font-medium text-gray-700"
                                 >
-                                    Period
+                                    Heure de début
                                 </label>
                                 <select
-                                    id="period"
-                                    v-model="form.period"
+                                    id="start_time"
+                                    v-model="form.start_time"
                                     class="mt-1 block w-full rounded-md border-gray-300 py-2 pr-10 pl-3 text-base focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
                                     :class="{
-                                        'border-red-500': form.errors.period,
+                                        'border-red-500':
+                                            form.errors.start_time,
                                     }"
                                     required
                                 >
-                                    <option value="">Sélectionnez une période</option>
-                                    <option value="AM">Matin (AM)</option>
-                                    <option value="PM">Après-midi (PM)</option>
+                                    <option value="">
+                                        Sélectionnez une heure de début
+                                    </option>
+                                    <option
+                                        v-for="timeSlot in timeSlots"
+                                        :key="timeSlot"
+                                        :value="timeSlot"
+                                    >
+                                        {{ timeSlot }}
+                                    </option>
                                 </select>
                                 <p
-                                    v-if="form.errors.period"
+                                    v-if="form.errors.start_time"
                                     class="mt-1 text-sm text-red-600"
                                 >
-                                    {{ form.errors.period }}
+                                    {{ form.errors.start_time }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <label
+                                    for="end_time"
+                                    class="block text-sm font-medium text-gray-700"
+                                >
+                                    Heure de fin
+                                </label>
+                                <select
+                                    id="end_time"
+                                    v-model="form.end_time"
+                                    class="mt-1 block w-full rounded-md border-gray-300 py-2 pr-10 pl-3 text-base focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
+                                    :class="{
+                                        'border-red-500': form.errors.end_time,
+                                    }"
+                                    :disabled="!form.start_time"
+                                    required
+                                >
+                                    <option value="">
+                                        Sélectionnez une heure de fin
+                                    </option>
+                                    <option
+                                        v-for="timeSlot in availableEndTimes"
+                                        :key="timeSlot"
+                                        :value="timeSlot"
+                                    >
+                                        {{ timeSlot }}
+                                    </option>
+                                </select>
+                                <p
+                                    v-if="form.errors.end_time"
+                                    class="mt-1 text-sm text-red-600"
+                                >
+                                    {{ form.errors.end_time }}
                                 </p>
                             </div>
                         </div>
@@ -231,7 +285,7 @@
                         <div
                             v-if="
                                 form.day_of_week !== null &&
-                                form.period &&
+                                form.reservation_time &&
                                 form.start_date &&
                                 form.end_date
                             "
@@ -243,7 +297,8 @@
                             <p class="text-sm text-gray-600">
                                 Cela créera des réservations pour chaque
                                 {{ daysOfWeek[form.day_of_week] }}
-                                {{ form.period }} du
+                                de {{ form.start_time }} à
+                                {{ form.end_time }} du
                                 {{ formatDate(form.start_date) }} au
                                 {{ formatDate(form.end_date) }}.
                             </p>
@@ -316,8 +371,8 @@
 
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { useForm, Link, router } from '@inertiajs/vue3';
-import { computed, ref, watch } from 'vue';
+import { Link, useForm } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import { route } from 'ziggy-js';
 
 const breadcrumbs = [
@@ -338,6 +393,10 @@ const props = defineProps({
         type: Array as () => Array<{ id: number; name: string }>,
         required: true,
     },
+    timeSlots: {
+        type: Array as () => Array<string>,
+        required: true,
+    },
 });
 
 const daysOfWeek = [
@@ -351,15 +410,40 @@ const daysOfWeek = [
 
 const today = new Date();
 const minStartDate = today.toISOString().split('T')[0];
+const availableEndTimes = computed(() => {
+    if (!form.start_time) return [];
+
+    const startIndex = props.timeSlots.indexOf(form.start_time);
+    if (startIndex === -1) return [];
+
+    // Return all time slots after the start time
+    return props.timeSlots.slice(startIndex + 1);
+});
 
 const form = useForm({
     room_id: '',
     day_of_week: null as number | null,
-    period: 'AM',
+    start_time: '',
+    end_time: '',
     start_date: minStartDate,
     end_date: '',
     user_id: '',
     description: '',
+});
+
+// Update the summary condition to check both start and end time
+// And update the summary text
+const isFormValid = computed(() => {
+    return (
+        form.room_id &&
+        form.day_of_week !== null &&
+        form.start_time &&
+        form.end_time &&
+        form.start_date &&
+        form.end_date &&
+        new Date(form.start_date) <= new Date(form.end_date) &&
+        totalOccurrences.value > 0
+    );
 });
 
 // Calculate total occurrences based on the selected date range and day of week
@@ -396,20 +480,6 @@ const totalOccurrences = computed(() => {
     return count;
 });
 
-// Form validation
-const isFormValid = computed(() => {
-    console.log(totalOccurrences.value);
-    return (
-        form.room_id &&
-        form.day_of_week !== null &&
-        form.period &&
-        form.start_date &&
-        form.end_date &&
-        new Date(form.start_date) <= new Date(form.end_date) &&
-        totalOccurrences.value > 0
-    );
-});
-
 // Format date for display
 const formatDate = (dateString: string) => {
     if (!dateString) return '';
@@ -430,7 +500,7 @@ const submit = () => {
             // Reset form on success
             form.reset();
             form.start_date = minStartDate;
-            form.period = 'AM';
+            form.reservation_time = '';
         },
         preserveScroll: true,
     });

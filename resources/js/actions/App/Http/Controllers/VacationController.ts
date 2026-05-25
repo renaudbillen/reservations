@@ -222,7 +222,7 @@ store.form = storeForm
 * @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
-export const edit = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const edit = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -237,7 +237,7 @@ edit.definition = {
 * @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
-edit.url = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+edit.url = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { vacation: args }
     }
@@ -270,7 +270,7 @@ edit.url = (args: { vacation: number | { id: number } } | [vacation: number | { 
 * @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
-edit.get = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+edit.get = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -280,7 +280,7 @@ edit.get = (args: { vacation: number | { id: number } } | [vacation: number | { 
 * @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
-edit.head = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+edit.head = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: edit.url(args, options),
     method: 'head',
 })
@@ -290,7 +290,7 @@ edit.head = (args: { vacation: number | { id: number } } | [vacation: number | {
 * @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
-const editForm = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+const editForm = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: edit.url(args, options),
     method: 'get',
 })
@@ -300,7 +300,7 @@ const editForm = (args: { vacation: number | { id: number } } | [vacation: numbe
 * @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
-editForm.get = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+editForm.get = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: edit.url(args, options),
     method: 'get',
 })
@@ -310,7 +310,7 @@ editForm.get = (args: { vacation: number | { id: number } } | [vacation: number 
 * @see app/Http/Controllers/VacationController.php:48
 * @route '/admin/vacations/{vacation}/edit'
 */
-editForm.head = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+editForm.head = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: edit.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
@@ -327,7 +327,7 @@ edit.form = editForm
 * @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
-export const update = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -342,7 +342,7 @@ update.definition = {
 * @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
-update.url = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+update.url = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { vacation: args }
     }
@@ -375,7 +375,7 @@ update.url = (args: { vacation: number | { id: number } } | [vacation: number | 
 * @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
-update.put = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -385,7 +385,7 @@ update.put = (args: { vacation: number | { id: number } } | [vacation: number | 
 * @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
-update.patch = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
@@ -395,7 +395,7 @@ update.patch = (args: { vacation: number | { id: number } } | [vacation: number 
 * @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
-const updateForm = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const updateForm = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PUT',
@@ -410,7 +410,7 @@ const updateForm = (args: { vacation: number | { id: number } } | [vacation: num
 * @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
-updateForm.put = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+updateForm.put = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PUT',
@@ -425,7 +425,7 @@ updateForm.put = (args: { vacation: number | { id: number } } | [vacation: numbe
 * @see app/Http/Controllers/VacationController.php:58
 * @route '/admin/vacations/{vacation}'
 */
-updateForm.patch = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+updateForm.patch = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PATCH',
@@ -442,7 +442,7 @@ update.form = updateForm
 * @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
-export const destroy = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -457,7 +457,7 @@ destroy.definition = {
 * @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
-destroy.url = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { vacation: args }
     }
@@ -490,7 +490,7 @@ destroy.url = (args: { vacation: number | { id: number } } | [vacation: number |
 * @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
-destroy.delete = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -500,7 +500,7 @@ destroy.delete = (args: { vacation: number | { id: number } } | [vacation: numbe
 * @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
-const destroyForm = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const destroyForm = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',
@@ -515,7 +515,7 @@ const destroyForm = (args: { vacation: number | { id: number } } | [vacation: nu
 * @see app/Http/Controllers/VacationController.php:75
 * @route '/admin/vacations/{vacation}'
 */
-destroyForm.delete = (args: { vacation: number | { id: number } } | [vacation: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+destroyForm.delete = (args: { vacation: string | number | { id: string | number } } | [vacation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',

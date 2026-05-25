@@ -19,6 +19,8 @@ class Room extends Model
         'name',
         'start_time',
         'end_time',
+        'hour_price',
+        'image',
     ];
 
     /**

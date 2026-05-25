@@ -91,11 +91,10 @@
                             </template>
                         </Column>
 
-                        <Column field="reservation_period" header="Période">
+                        <Column field="reservation_time" header="Heure">
                             <template #body="slotProps">
-                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
-                                      :class="slotProps.data.reservation_period === 'AM' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800'">
-                                    {{ slotProps.data.reservation_period === 'AM' ? 'Matin' : 'Après-midi' }}
+                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800">
+                                    {{ slotProps.data.reservation_time }}
                                 </span>
                             </template>
                         </Column>
@@ -154,10 +153,10 @@
                             </template>
                         </Column>
 
-                        <Column field="reservation_period" header="Période">
+                        <Column field="reservation_time" header="Heure">
                             <template #body="slotProps">
                                 <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800">
-                                    {{ slotProps.data.reservation_period === 'AM' ? 'Matin' : 'Après-midi' }}
+                                    {{ slotProps.data.reservation_time }}
                                 </span>
                             </template>
                         </Column>
